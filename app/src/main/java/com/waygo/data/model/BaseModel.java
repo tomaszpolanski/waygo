@@ -1,6 +1,8 @@
 package com.waygo.data.model;
 
 
+import android.support.annotation.NonNull;
+
 import com.waygo.utils.Linq;
 import com.waygo.utils.option.Option;
 
@@ -10,6 +12,7 @@ import java.util.Arrays;
 
 public abstract class BaseModel {
 
+    @NonNull
     protected <T> Option<T> cast(final Object o) {
         return Option.asOption(o)
                 .filter(obj -> this.getClass().isInstance(obj))
