@@ -1,14 +1,15 @@
 package com.waygo.data.provider;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.waygo.data.model.GeoCoordinate;
 import com.waygo.data.model.fuel.Electric;
 import com.waygo.data.model.fuel.Fuel;
 import com.waygo.data.model.fuel.Premium;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.ObservableEx;
+import com.waygo.utils.option.Option;
 import com.waygo.utils.result.Result;
 
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,14 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     public Observable<Result<Fuel>> getTankLevel() {
         return generatePremium(mSchedulerProvider)
                 .mergeWith(generateElectric(mSchedulerProvider));
+    }
+
+    @NonNull
+    @Override
+    public Observable<GeoCoordinate> getGeoPosition() {
+        return ObservableEx.choose(ObservableEx.repeatTimer(GeoCoordinate.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
+                Option::id)
+                .share();
     }
 
     @NonNull

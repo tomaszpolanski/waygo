@@ -46,8 +46,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    ILocationProvider provideLocationProvider() {
-        return new FakeLocationProvider();
+    ILocationProvider provideLocationProvider(ISchedulerProvider schedulerProvider) {
+        return new FakeLocationProvider(schedulerProvider);
     }
 
     @Provides
