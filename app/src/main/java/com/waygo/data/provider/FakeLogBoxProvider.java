@@ -11,6 +11,7 @@ import com.waygo.utils.ObservableEx;
 import com.waygo.utils.result.Result;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 public final class FakeLogBoxProvider implements ILogBoxProvider {
 
@@ -30,13 +31,19 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
 
     @NonNull
     private static Observable<Result<Fuel>> generatePremium(final @NonNull ISchedulerProvider schedulerProvider) {
-        return ObservableEx.randTimer(0, 100, 1, schedulerProvider.getTimeScheduler())
-                .<Result<Fuel>>map(val -> Premium.create( val / 100 ));
+        return generateValue(Premium::create, schedulerProvider);
     }
 
     @NonNull
     private static Observable<Result<Fuel>> generateElectric(final @NonNull ISchedulerProvider schedulerProvider) {
-        return ObservableEx.randTimer(0, 100, 1, schedulerProvider.getTimeScheduler())
-                .<Result<Fuel>>map(val -> Electric.create( val / 100 ));
+        return generateValue(Electric::create, schedulerProvider);
+    }
+
+    @NonNull
+    private static Observable<Result<Fuel>> generateValue( final @NonNull Func1<Float, Result<Fuel>> create,
+                                                           final @NonNull ISchedulerProvider schedulerProvider) {
+        return ObservableEx.timer(1.0f, 1, schedulerProvider.getTimeScheduler())
+                .reduce((f, s) -> f >= 0 ? f - 0.01f : 0.0f)
+                .<Result<Fuel>>map(create);
     }
 }
