@@ -4,6 +4,8 @@ import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.data.DataLayer;
 import com.waygo.fragments.RepositoryFragment;
+import com.waygo.network.LufthansaAccountService;
+import com.waygo.network.ServiceGenerator;
 import com.waygo.pojo.UserSettings;
 
 import android.content.Intent;
@@ -13,8 +15,12 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Inject
@@ -30,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new RepositoryFragment())
-                    .commit();
+                                       .add(R.id.container, new RepositoryFragment())
+                                       .commit();
         }
     }
 

@@ -2,6 +2,7 @@ package com.waygo.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,21 @@ import android.view.ViewGroup;
 import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.activities.MainActivity;
+import com.waygo.network.LufthansaAccountService;
+import com.waygo.network.ServiceGenerator;
 import com.waygo.utils.Instrumentation;
 import com.waygo.view.RepositoryView;
 import com.waygo.viewmodels.RepositoryViewModel;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class RepositoryFragment extends Fragment {
+
+    private static final String TAG = RepositoryFragment.class.getSimpleName();
+
     private RepositoryView repositoryView;
 
     @Inject
@@ -43,8 +52,7 @@ public class RepositoryFragment extends Fragment {
         viewModel.subscribeToDataStore();
 
         view.findViewById(R.id.repository_fragment_choose_repository_button)
-                .setOnClickListener(e ->
-                        ((MainActivity) getActivity()).chooseRepository());
+                .setOnClickListener(e -> ((MainActivity) getActivity()).chooseRepository());
     }
 
     @Override
