@@ -52,7 +52,7 @@ public class GitHubRepositoryFetcher extends FetcherBase {
             return;
         }
         final String uri = gitHubRepositoryStore.getUriForKey(repositoryId).toString();
-        Subscription subscription = createNetworkObservable(repositoryId)
+        Subscription subscription =  networkApi.getRepository(repositoryId)
                 .subscribeOn(Schedulers.computation())
                 .doOnError(doOnError(uri))
                 .doOnCompleted(() -> completeRequest(uri))
@@ -60,19 +60,6 @@ public class GitHubRepositoryFetcher extends FetcherBase {
                         e -> Log.e(TAG, "Error fetching GitHub repository " + repositoryId, e));
         requestMap.put(repositoryId, subscription);
         startRequest(uri);
-    }
-
-    @NonNull
-    private Observable<GitHubRepository> createNetworkObservable(int repositoryId) {
-        return Observable.<GitHubRepository>create(subscriber -> {
-            try {
-                GitHubRepository repository = networkApi.getRepository(repositoryId);
-                subscriber.onNext(repository);
-                subscriber.onCompleted();
-            } catch (Exception e) {
-                subscriber.onError(e);
-            }
-        });
     }
 
     @NonNull

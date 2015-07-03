@@ -85,17 +85,9 @@ public class GitHubRepositorySearchFetcher extends FetcherBase {
     private Observable<List<GitHubRepository>> createNetworkObservable(@NonNull final String searchString) {
         Preconditions.checkNotNull(searchString, "Search String cannot be null.");
 
-        return Observable.<List<GitHubRepository>>create((subscriber) -> {
-            try {
-                Map<String, String> params = new HashMap<>();
-                params.put("q", searchString);
-                List<GitHubRepository> results = networkApi.search(params);
-                subscriber.onNext(results);
-                subscriber.onCompleted();
-            } catch (Exception e) {
-                subscriber.onError(e);
-            }
-        });
+        Map<String, String> params = new HashMap<>();
+        params.put("q", searchString);
+        return networkApi.search(params);
     }
 
     @NonNull
