@@ -13,6 +13,7 @@ repositories {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.trello.victor'
 
 android {
     compileSdkVersion 22
@@ -54,10 +55,24 @@ android {
     packagingOptions {
         exclude 'LICENSE.txt'
     }
+
+    sourceSets {
+        main {
+            svg.srcDir 'src/main/svg'
+        }
+    }
 }
 
 retrolambda {
     jvmArgs '-noverify'
+}
+
+victor {
+    // Any assets defined in relative terms needs a base DPI specified
+    svgDpi = 72
+
+    // Do not generate these densities for SVG assets
+    excludeDensities = [ 'ldpi', 'xxxhdpi' ]
 }
 
 dependencies {
