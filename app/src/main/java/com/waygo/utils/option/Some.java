@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.android.internal.util.Predicate;
+import com.waygo.utils.Linq;
 import com.waygo.utils.result.Result;
 
-import java8.util.stream.Stream;
-import java8.util.stream.StreamSupport;
+
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -115,11 +115,11 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Stream<T> toStream() {
-        return StreamSupport.of(mValue);
+    public Linq<T> toLinq() {
+        return Linq.create(mValue);
     }
 
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
+    @SuppressWarnings("EqualsWhichDoecreatesntCheckParameterClass")
     @Override
     public boolean equals(final Object o) {
         return Option.asOption(o)

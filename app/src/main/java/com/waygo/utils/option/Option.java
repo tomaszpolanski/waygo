@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.android.internal.util.Predicate;
+import com.waygo.utils.Linq;
 import com.waygo.utils.result.Result;
 
-import java8.util.stream.Stream;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -91,6 +91,6 @@ public abstract class Option<T> {
     public abstract Result<T> toResult(@NonNull final String message);
 
     @NonNull
-    public abstract Stream<T> toStream();
+    public abstract Linq<T> toLinq();
 }
 

@@ -84,7 +84,6 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0'
     compile 'javax.annotation:jsr250-api:1.0'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
-    compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
     compile ('com.squareup.okhttp:okhttp-urlconnection:2.0.0') {
         exclude group: 'com.squareup.okhttp', module: 'okhttp'
     }
