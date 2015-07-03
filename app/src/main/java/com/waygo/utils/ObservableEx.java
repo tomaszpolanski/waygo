@@ -22,6 +22,11 @@ public final class ObservableEx<T> extends Observable<T> {
                          .map(__ -> value);
     }
 
+    public static Observable<Integer> randTimer(final int min, final int max, final long seconds, final Scheduler scheduler) {
+        return Observable.timer(seconds, TimeUnit.SECONDS, scheduler)
+                .map(__ -> Rand.randInt(min, max));
+    }
+
     public static <T> Observable<T> late(final Observable<T> observable, long delay, TimeUnit unit) {
         return observable.flatMap(val -> Observable.timer(delay, unit).map(__ -> val));
     }
