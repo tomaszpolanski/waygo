@@ -1,6 +1,7 @@
 package com.waygo.data.provider;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.waygo.data.model.fuel.Electric;
 import com.waygo.data.model.fuel.Fuel;
@@ -9,6 +10,8 @@ import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.ObservableEx;
 import com.waygo.utils.result.Result;
+
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -42,8 +45,9 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     @NonNull
     private static Observable<Result<Fuel>> generateValue( final @NonNull Func1<Float, Result<Fuel>> create,
                                                            final @NonNull ISchedulerProvider schedulerProvider) {
-        return ObservableEx.timer(1.0f, 1, schedulerProvider.getTimeScheduler())
-                .reduce((f, s) -> f >= 0 ? f - 0.01f : 0.0f)
-                .<Result<Fuel>>map(create);
+        return Observable.timer(1, 1, TimeUnit.SECONDS, schedulerProvider.getTimeScheduler())
+                .map(s -> 0.1f - (float) s / (float) 100)
+                .map(create)
+                .share();
     }
 }

@@ -12,6 +12,6 @@ public final class Electric extends Fuel {
 
     @NonNull
     public static Result<Fuel> create(final float value) {
-        return createValue(value).map(Electric::new);
+        return createValue(value).map(v -> new Electric(v));
     }
 }

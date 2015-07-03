@@ -12,6 +12,6 @@ public final class Premium extends Fuel {
 
     @NonNull
     public static Result<Fuel> create(final float value) {
-        return createValue(value).map(Premium::new);
+        return createValue(value).map(v -> new Premium(v));
     }
 }

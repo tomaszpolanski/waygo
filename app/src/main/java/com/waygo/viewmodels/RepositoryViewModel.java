@@ -1,10 +1,15 @@
 package com.waygo.viewmodels;
 
 import com.waygo.data.DataLayer;
+import com.waygo.data.model.fuel.Fuel;
+import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.network.LufthansaAccountService;
 import com.waygo.network.ServiceGenerator;
 import com.waygo.pojo.GitHubRepository;
 import com.waygo.pojo.UserSettings;
+import com.waygo.utils.ObservableEx;
+import com.waygo.utils.option.Option;
+import com.waygo.utils.result.Result;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -23,15 +28,19 @@ public class RepositoryViewModel extends AbstractViewModel {
     private final DataLayer.FetchAndGetGitHubRepository fetchAndGetGitHubRepository;
 
     final private BehaviorSubject<GitHubRepository> repository = BehaviorSubject.create();
+    private final Observable<Fuel> mFuel;
 
     public RepositoryViewModel(@NonNull DataLayer.GetUserSettings getUserSettings,
-                               @NonNull DataLayer.FetchAndGetGitHubRepository fetchAndGetGitHubRepository) {
+                               @NonNull DataLayer.FetchAndGetGitHubRepository fetchAndGetGitHubRepository,
+                               @NonNull ILogBoxProvider logBoxProvider) {
         Preconditions.checkNotNull(getUserSettings, "Gey User Settings cannot be null.");
         Preconditions.checkNotNull(fetchAndGetGitHubRepository,
                                    "Fetch And Get GitHub Repository cannot be null.");
 
         this.getUserSettings = getUserSettings;
         this.fetchAndGetGitHubRepository = fetchAndGetGitHubRepository;
+        mFuel = ObservableEx.choose(logBoxProvider.getTankLevel()
+                .map(Result::asOption), Option::id);
         Log.v(TAG, "RepositoryViewModel");
     }
 
@@ -66,5 +75,10 @@ public class RepositoryViewModel extends AbstractViewModel {
     @NonNull
     public Observable<GitHubRepository> getRepository() {
         return repository.asObservable();
+    }
+
+    @NonNull
+    public Observable<Fuel> getFuel() {
+        return mFuel;
     }
 }

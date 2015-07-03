@@ -4,6 +4,13 @@ import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import com.waygo.data.provider.FakeLocationProvider;
+import com.waygo.data.provider.FakeLogBoxProvider;
+import com.waygo.data.provider.SchedulerProvider;
+import com.waygo.data.provider.interfaces.ILocationProvider;
+import com.waygo.data.provider.interfaces.ILogBoxProvider;
+import com.waygo.data.provider.interfaces.ISchedulerProvider;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -29,6 +36,24 @@ public class ApplicationModule {
     @Singleton
     Application providesApplication() {
         return application;
+    }
+
+    @Provides
+    @Singleton
+    ISchedulerProvider provideSchedulerProvider() {
+        return new SchedulerProvider();
+    }
+
+    @Provides
+    @Singleton
+    ILocationProvider provideLocationProvider() {
+        return new FakeLocationProvider();
+    }
+
+    @Provides
+    @Singleton
+    ILogBoxProvider providesLogBoxProvider(ISchedulerProvider schedulerProvider) {
+        return new FakeLogBoxProvider(schedulerProvider);
     }
 
     @Provides
