@@ -55,7 +55,7 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     private static Observable<Result<Fuel>> generateValue( final @NonNull Func1<Float, Result<Fuel>> create,
                                                            final @NonNull ISchedulerProvider schedulerProvider) {
         return Observable.timer(1, 1, TimeUnit.SECONDS, schedulerProvider.getTimeScheduler())
-                .map(s -> 0.1f - (float) s / (float) 100)
+                .map(s -> 0.7f - (float) s / (float) 100)
                 .map(create)
                 .share();
     }
