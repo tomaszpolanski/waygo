@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import rx.android.internal.Preconditions;
 
 public class RepositoryView extends FrameLayout {
@@ -50,12 +52,36 @@ public class RepositoryView extends FrameLayout {
     private void setFlight(@NonNull Flight flight) {
         Preconditions.checkNotNull(flight, "Flight cannot be null.");
 
-        titleTextView.setText("Name & Status: " + flight.getMarketingCarrier().getAirlineID()
-                              + flight.getMarketingCarrier().getFlightNumber() + " "
-                              + flight.getFlightStatus().getDefinition());
-        stargazersTextView
-                .setText("Departure: " + flight.getDeparture().getActualTimeLocal().getDateTime());
-        forksTextView.setText(
-                "Estimated arrival: " + flight.getArrival().getEstimatedTimeLocal().getDateTime());
+        titleTextView.setText("Name & Status: "
+                              + getFlightName(flight) + " "
+                              + getArrivalDefinition(flight));
+        stargazersTextView.setText("Scheduled departure: " + getDepartureText(flight));
+        forksTextView.setText("Scheduled arrival: " + getArrivalText(flight));
     }
+
+    @NonNull
+    private String getArrivalDefinition(@NonNull Flight flight) {
+        return flight.getArrival().getTimeStatus().getDefinition();
+    }
+
+    @NonNull
+    private String getFlightName(@NonNull Flight flight) {
+        return flight.getMarketingCarrier().getAirlineID()
+               + flight.getMarketingCarrier().getFlightNumber();
+    }
+
+    @NonNull
+    private String getArrivalText(@NonNull Flight flight) {
+        return flight.getArrival() != null
+                ? flight.getArrival().getScheduledTimeLocal().getDateTime()
+                : "Not yet arrived";
+    }
+
+    @NonNull
+    private String getDepartureText(@NonNull Flight flight) {
+        return flight.getDeparture() != null
+                ? flight.getDeparture().getScheduledTimeLocal().getDateTime()
+                : "Not departed";
+    }
+
 }
