@@ -21,6 +21,12 @@ import rx.Subscriber;
 
 public final class FakeButler implements IButler {
 
+    public static final String TOILETS = "Waygo, where are the toilets?";
+    public static final String HUNGRY = "Waygo, I'm Hungry.";
+    public static final String CHEAPGOOD = "Yeah, That would be great something cheap and good.";
+    public static final String MAP = "Yeah, perfect how do I get there?";
+    public static final String CHEERS = "Cheers Waygo.";
+
     @NonNull
     public final Resources mResources;
     @NonNull
@@ -40,17 +46,21 @@ public final class FakeButler implements IButler {
             public void call(Subscriber<? super Result<ButlerResponse>> subscriber) {
                 subscriber.onNext(getResponse(question));
             }
-        }).debounce(3, TimeUnit.SECONDS, mSchedulerProvider.getTimeScheduler());
+        }).debounce(1, TimeUnit.SECONDS, mSchedulerProvider.getTimeScheduler());
     }
 
     @NonNull
     private Result<ButlerResponse> getResponse(@NonNull final String question) {
-        switch (question.toLowerCase()) {
-            case "say what?!":
-                return ButlerSayResponse.create("What!");
-            case "where to go?":
-                return getBitmap(R.drawable.__leak_canary_icon, mResources)
-                        .flatMap(bitmap -> ButlerShowResponse.create("Please go here:", bitmap));
+        switch (question) {
+            case HUNGRY:
+                return ButlerSayResponse.create("Hi, Hungry I thought your name was Jenny, Ha Ha :P So, Vegan like last time?");
+            case TOILETS:
+                return ButlerSayResponse.create("Next one is twenty metres on the left. ");
+            case CHEAPGOOD:
+                return ButlerSayResponse.create("Ok, There is \"&lt;a href=\"http://www.omnomnom.com\">Natural Beans&lt;/a>\" which is mid priced with four stars on foursquare? ");
+            case MAP:
+                return getBitmap(R.drawable.map, mResources)
+                        .flatMap(bitmap -> ButlerShowResponse.create("Here's the map.", bitmap));
             default:
                 return Result.failure("Sorry, I didn't get that");
         }

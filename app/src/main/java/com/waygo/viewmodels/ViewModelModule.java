@@ -3,6 +3,7 @@ package com.waygo.viewmodels;
 import com.waygo.data.DataLayer;
 import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
+import com.waygo.data.provider.interfaces.ISchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,8 +20,8 @@ public class ViewModelModule {
     }
 
     @Provides
-    public ChatViewModel provideChatViewModel( IButler butler) {
-        return new ChatViewModel( butler);
+    public ChatViewModel provideChatViewModel( IButler butler, ISchedulerProvider schedulerProvider) {
+        return new ChatViewModel( butler, schedulerProvider);
     }
 
 }

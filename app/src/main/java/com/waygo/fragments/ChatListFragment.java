@@ -68,6 +68,7 @@ public class ChatListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel.subscribeToDataStore();
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {

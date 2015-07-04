@@ -379,6 +379,21 @@ public class Linq<T> extends ArrayList<T> {
         return new Linq<>();
     }
 
+    public static <T> Linq<T> skip(final Iterable<T> self, final int count) {
+        Linq<T> list = new Linq<>();
+        int skipped = 0;
+        for (T item : self) {
+            if (skipped++ >= count) {
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
+    public Linq<T> skip(final int count) {
+        return skip(this, count);
+    }
+
     @Override
     public String toString() {
         return "[" + map(Object::toString).reduce((f, s) -> f + ", " + s) + "]";
