@@ -2,6 +2,7 @@ package com.waygo.activities;
 
 import com.waygo.R;
 import com.waygo.WaygoApplication;
+import com.waygo.fragments.AgendaListFragment;
 import com.waygo.fragments.RepositoryFragment;
 
 import android.content.Intent;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new RepositoryFragment(), "Category 1");
-        adapter.addFragment(new RepositoryFragment(), "Category 2");
+        adapter.addFragment(new AgendaListFragment(), "Category 2");
         adapter.addFragment(new RepositoryFragment(), "Category 3");
         viewPager.setAdapter(adapter);
     }
