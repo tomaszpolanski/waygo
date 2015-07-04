@@ -57,7 +57,7 @@ public final class FakeButler implements IButler {
             case TOILETS:
                 return ButlerSayResponse.create("Next one is twenty metres on the left. ");
             case CHEAPGOOD:
-                return ButlerSayResponse.create("Ok, There is \"&lt;a href=\"http://www.omnomnom.com\">Natural Beans&lt;/a>\" which is mid priced with four stars on foursquare? ");
+                return ButlerSayResponse.create("Ok, There is <a href='http://www.beans.com'> Natural Beans </a> which is mid priced with four stars on foursquare? ");
             case MAP:
                 return getBitmap(R.drawable.map, mResources)
                         .flatMap(bitmap -> ButlerShowResponse.create("Here's the map.", bitmap));
