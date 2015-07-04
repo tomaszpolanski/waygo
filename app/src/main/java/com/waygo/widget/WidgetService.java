@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.data.DataLayer;
-import com.waygo.pojo.UserSettings;
+import com.waygo.data.DataStreamNotification;
 
 import javax.inject.Inject;
 
@@ -21,10 +21,7 @@ public class WidgetService extends Service {
     private static final String TAG = WidgetService.class.getSimpleName();
 
     @Inject
-    DataLayer.GetUserSettings getUserSettings;
-
-    @Inject
-    DataLayer.FetchAndGetGitHubRepository fetchAndGetGitHubRepository;
+    DataLayer.GetFlightStatus mGetFlightStatus;
 
     private CompositeSubscription subscriptions;
 
@@ -54,19 +51,21 @@ public class WidgetService extends Service {
 
         clearSubscriptions();
         subscriptions.add(
-                getUserSettings.call()
-                        .map(UserSettings::getSelectedRepositoryId)
-                        .switchMap(fetchAndGetGitHubRepository::call)
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(repository -> {
-                            remoteViews.setTextViewText(R.id.widget_layout_title, repository.getName());
-                            remoteViews.setTextViewText(R.id.widget_layout_stargazers,
-                                    "stars: " + repository.getStargazersCount());
-                            remoteViews.setTextViewText(R.id.widget_layout_forks,
-                                    "forks: " + repository.getForksCount());
-                            appWidgetManager.updateAppWidget(widgetId, remoteViews);
-                        })
-        );
+                mGetFlightStatus.call("LH400", "2015-07-03")
+                                .map(DataStreamNotification::getValue)
+                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .subscribe(flight -> {
+                                    remoteViews.setTextViewText(R.id.widget_layout_title,
+                                                                flight.getFlightStatus().getDefinition());
+//                                    remoteViews.setTextViewText(R.id.widget_layout_stargazers,
+//                                                                "stars: " + repository
+//                                                                        .getStargazersCount());
+//                                    remoteViews.setTextViewText(R.id.widget_layout_forks,
+//                                                                "forks: " + repository
+//                                                                        .getForksCount());
+                                    appWidgetManager.updateAppWidget(widgetId, remoteViews);
+                                })
+                         );
     }
 
     private void clearSubscriptions() {

@@ -61,6 +61,14 @@ public class Flight {
         return mFlightStatus;
     }
 
+    public String getId() {
+        final String date = getDeparture().getScheduledTimeUTC().getDateTime()
+                                          .substring(0, "yyyy-MM-dd".length()).replace("-", "");
+        final String flightNumber = getMarketingCarrier().getAirlineID()
+                                    + getMarketingCarrier().getFlightNumber();
+        return flightNumber + date;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Flight{");

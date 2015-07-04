@@ -1,7 +1,7 @@
 package com.waygo.view;
 
 import com.waygo.R;
-import com.waygo.pojo.GitHubRepository;
+import com.waygo.pojo.flightstatus.Flight;
 import com.waygo.utils.RxBinderUtil;
 import com.waygo.viewmodels.RepositoryViewModel;
 
@@ -15,10 +15,13 @@ import android.widget.TextView;
 import rx.android.internal.Preconditions;
 
 public class RepositoryView extends FrameLayout {
+
     private final RxBinderUtil rxBinderUtil = new RxBinderUtil(this);
 
     private TextView titleTextView;
+
     private TextView stargazersTextView;
+
     private TextView forksTextView;
 
     public RepositoryView(Context context) {
@@ -40,15 +43,19 @@ public class RepositoryView extends FrameLayout {
     public void setViewModel(@Nullable RepositoryViewModel viewModel) {
         rxBinderUtil.clear();
         if (viewModel != null) {
-            rxBinderUtil.bindProperty(viewModel.getRepository(), this::setRepository);
+            rxBinderUtil.bindProperty(viewModel.getFlight(), this::setFlight);
         }
     }
 
-    private void setRepository(@NonNull GitHubRepository repository) {
-        Preconditions.checkNotNull(repository, "Repository cannot be null.");
+    private void setFlight(@NonNull Flight flight) {
+        Preconditions.checkNotNull(flight, "Flight cannot be null.");
 
-        titleTextView.setText(repository.getName());
-        stargazersTextView.setText("stars: " + repository.getStargazersCount());
-        forksTextView.setText("forks: " + repository.getForksCount());
+        titleTextView.setText("Name & Status: " + flight.getMarketingCarrier().getAirlineID()
+                              + flight.getMarketingCarrier().getFlightNumber() + " "
+                              + flight.getFlightStatus().getDefinition());
+        stargazersTextView
+                .setText("Departure: " + flight.getDeparture().getActualTimeLocal().getDateTime());
+        forksTextView.setText(
+                "Estimated arrival: " + flight.getArrival().getEstimatedTimeLocal().getDateTime());
     }
 }

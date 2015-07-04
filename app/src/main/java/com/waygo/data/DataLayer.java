@@ -1,16 +1,11 @@
 package com.waygo.data;
 
-import com.waygo.data.provider.UserSettingsContract;
-import com.waygo.data.stores.GitHubRepositorySearchStore;
-import com.waygo.data.stores.GitHubRepositoryStore;
+import com.waygo.data.stores.FlightStatusStore;
 import com.waygo.data.stores.NetworkRequestStatusStore;
-import com.waygo.data.stores.UserSettingsStore;
 import com.waygo.data.utils.DataLayerUtils;
 import com.waygo.network.NetworkService;
-import com.waygo.pojo.GitHubRepository;
-import com.waygo.pojo.GitHubRepositorySearch;
 import com.waygo.pojo.NetworkRequestStatus;
-import com.waygo.pojo.UserSettings;
+import com.waygo.pojo.flightstatus.Flight;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,109 +16,72 @@ import rx.Observable;
 import rx.android.internal.Preconditions;
 
 public class DataLayer extends com.waygo.data.DataLayerBase {
+
     private static final String TAG = DataLayer.class.getSimpleName();
+
     private final Context context;
-    protected final UserSettingsStore userSettingsStore;
 
     public DataLayer(@NonNull Context context,
-                     @NonNull UserSettingsStore userSettingsStore,
                      @NonNull NetworkRequestStatusStore networkRequestStatusStore,
-                     @NonNull GitHubRepositoryStore gitHubRepositoryStore,
-                     @NonNull GitHubRepositorySearchStore gitHubRepositorySearchStore) {
-        super(networkRequestStatusStore, gitHubRepositoryStore, gitHubRepositorySearchStore);
+                     @NonNull FlightStatusStore flightStatusStore) {
+        super(networkRequestStatusStore, flightStatusStore);
 
         Preconditions.checkNotNull(context, "Context cannot be null.");
-        Preconditions.checkNotNull(userSettingsStore, "User Settings Store cannot be null.");
 
         this.context = context;
-        this.userSettingsStore = userSettingsStore;
     }
 
     @NonNull
-    public Observable<DataStreamNotification<GitHubRepositorySearch>> getGitHubRepositorySearch(@NonNull final String searchString) {
-        Preconditions.checkNotNull(searchString, "Search string Store cannot be null.");
+    public Observable<DataStreamNotification<Flight>> getFlightStatus(
+            @NonNull final String flightNumber,
+            @NonNull final String date) {
+        Preconditions.checkNotNull(flightNumber, "Flight Number cannot be null.");
+        Preconditions.checkNotNull(date, "date cannot be null.");
 
-        final Uri uri = gitHubRepositorySearchStore.getUriForKey(searchString);
+        final String id = flightNumber + date.replace("-", "");
+        final Uri uri = flightStatusStore.getUriForKey(id);
         final Observable<NetworkRequestStatus> networkRequestStatusObservable =
                 networkRequestStatusStore.getStream(uri.toString().hashCode());
-        final Observable<GitHubRepositorySearch> gitHubRepositorySearchObservable =
-                gitHubRepositorySearchStore.getStream(searchString);
+        final Observable<Flight> flightStatusObservable =
+                flightStatusStore.getStream(id);
         return DataLayerUtils.createDataStreamNotificationObservable(
-                        networkRequestStatusObservable, gitHubRepositorySearchObservable);
+                networkRequestStatusObservable, flightStatusObservable);
     }
 
     @NonNull
-    public Observable<DataStreamNotification<GitHubRepositorySearch>> fetchAndGetGitHubRepositorySearch(@NonNull final String searchString) {
-        Preconditions.checkNotNull(searchString, "Search string Store cannot be null.");
+    public Observable<DataStreamNotification<Flight>> fetchAndGetFlightStatus(
+            @NonNull final String flightNumber,
+            @NonNull final String date) {
+        Preconditions.checkNotNull(flightNumber, "Flight Number cannot be null.");
+        Preconditions.checkNotNull(date, "date cannot be null.");
 
-        final Observable<DataStreamNotification<GitHubRepositorySearch>> gitHubRepositoryStream =
-                getGitHubRepositorySearch(searchString);
-        fetchGitHubRepositorySearch(searchString);
-        return gitHubRepositoryStream;
+        final Observable<DataStreamNotification<Flight>> flightStatusObservable =
+                getFlightStatus(flightNumber, date);
+        fetchFlightStatus(flightNumber, date);
+        return flightStatusObservable.distinctUntilChanged();
     }
 
-    private void fetchGitHubRepositorySearch(@NonNull final String searchString) {
-        Preconditions.checkNotNull(searchString, "Search string Store cannot be null.");
+    private void fetchFlightStatus(@NonNull final String flightNumber,
+                                   @NonNull final String date) {
+        Preconditions.checkNotNull(flightNumber, "Flight Number cannot be null.");
+        Preconditions.checkNotNull(date, "date cannot be null.");
 
         Intent intent = new Intent(context, NetworkService.class);
-        intent.putExtra("contentUriString", gitHubRepositorySearchStore.getContentUri().toString());
-        intent.putExtra("searchString", searchString);
+        intent.putExtra("contentUriString", flightStatusStore.getContentUri().toString());
+        intent.putExtra("flightNumber", flightNumber);
+        intent.putExtra("date", date);
         context.startService(intent);
     }
 
-    @NonNull
-    public Observable<GitHubRepository> getGitHubRepository(@NonNull Integer repositoryId) {
-        Preconditions.checkNotNull(repositoryId, "Repository Id cannot be null.");
 
-        return gitHubRepositoryStore.getStream(repositoryId);
+    public interface FetchAndGetGetFlightStatus extends GetFlightStatus {
+
     }
 
-    @NonNull
-    public Observable<GitHubRepository> fetchAndGetGitHubRepository(@NonNull Integer repositoryId) {
-        Preconditions.checkNotNull(repositoryId, "Repository Id cannot be null.");
+    public interface GetFlightStatus {
 
-        fetchGitHubRepository(repositoryId);
-        return getGitHubRepository(repositoryId);
-    }
-
-    private void fetchGitHubRepository(@NonNull Integer repositoryId) {
-        Intent intent = new Intent(context, NetworkService.class);
-        intent.putExtra("contentUriString", gitHubRepositoryStore.getContentUri().toString());
-        intent.putExtra("id", repositoryId);
-        context.startService(intent);
-    }
-
-    @NonNull
-    public Observable<UserSettings> getUserSettings() {
-        return userSettingsStore.getStream(UserSettingsContract.DEFAULT_USER_ID);
-    }
-
-    public void setUserSettings(@NonNull UserSettings userSettings) {
-        Preconditions.checkNotNull(userSettings, "User Settings cannot be null.");
-
-        userSettingsStore.insertOrUpdate(userSettings);
-    }
-
-    public interface GetUserSettings {
         @NonNull
-        Observable<UserSettings> call();
-    }
-
-    public interface SetUserSettings {
-        void call(@NonNull UserSettings userSettings);
-    }
-
-    public interface GetGitHubRepository {
-        @NonNull
-        Observable<GitHubRepository> call(int repositoryId);
-    }
-
-    public interface FetchAndGetGitHubRepository extends GetGitHubRepository {
-
-    }
-
-    public interface GetGitHubRepositorySearch {
-        @NonNull
-        Observable<DataStreamNotification<GitHubRepositorySearch>> call(@NonNull String search);
+        Observable<DataStreamNotification<Flight>> call(@NonNull String flightNumber,
+                                                        @NonNull String date);
     }
 }

@@ -36,11 +36,6 @@ public class NetworkRequestStatus {
         return errorMessage;
     }
 
-    @Override
-    public String toString() {
-        return "NetworkRequestStatus(" + uri + ", " + status + ")";
-    }
-
     public static NetworkRequestStatus ongoing(String uri) {
         return new NetworkRequestStatus(uri, NETWORK_STATUS_ONGOING, 0, null);
     }
@@ -63,5 +58,50 @@ public class NetworkRequestStatus {
 
     public boolean isCompleted() {
         return status.equals(NETWORK_STATUS_COMPLETED);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof NetworkRequestStatus)) {
+            return false;
+        }
+
+        NetworkRequestStatus that = (NetworkRequestStatus) o;
+
+        if (errorCode != that.errorCode) {
+            return false;
+        }
+        if (uri != null ? !uri.equals(that.uri) : that.uri != null) {
+            return false;
+        }
+        if (status != null ? !status.equals(that.status) : that.status != null) {
+            return false;
+        }
+        return !(errorMessage != null ? !errorMessage.equals(that.errorMessage)
+                : that.errorMessage != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uri != null ? uri.hashCode() : 0;
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + errorCode;
+        result = 31 * result + (errorMessage != null ? errorMessage.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("NetworkRequestStatus{");
+        sb.append("uri='").append(uri).append('\'');
+        sb.append(", status='").append(status).append('\'');
+        sb.append(", errorCode=").append(errorCode);
+        sb.append(", errorMessage='").append(errorMessage).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

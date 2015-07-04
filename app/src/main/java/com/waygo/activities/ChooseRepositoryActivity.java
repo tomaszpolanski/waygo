@@ -1,8 +1,5 @@
 package com.waygo.activities;
 
-import com.waygo.R;
-import com.waygo.fragments.RepositoriesFragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -8,13 +8,19 @@ import com.google.gson.annotations.SerializedName;
 public class AccessToken extends BaseResponse {
 
     @SerializedName("access_token")
-    private String accessToken;
+    private final String accessToken;
 
     @SerializedName("token_type")
-    private String tokenType;
+    private final String tokenType;
 
     @SerializedName("expires_in")
-    private Long expiresIn;
+    private final Long expiresIn;
+
+    public AccessToken(String accessToken, String tokenType, Long expiresIn) {
+        this.accessToken = accessToken;
+        this.tokenType = tokenType;
+        this.expiresIn = expiresIn;
+    }
 
     public String getAccessToken() {
         return accessToken;

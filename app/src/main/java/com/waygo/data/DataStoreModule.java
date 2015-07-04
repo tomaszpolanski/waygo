@@ -1,10 +1,8 @@
 package com.waygo.data;
 
-import com.waygo.data.stores.GitHubRepositorySearchStore;
-import com.waygo.data.stores.GitHubRepositoryStore;
+import com.waygo.data.stores.FlightStatusStore;
 import com.waygo.data.stores.NetworkRequestStatusStore;
 import com.waygo.data.stores.StoreModule;
-import com.waygo.data.stores.UserSettingsStore;
 import com.waygo.injections.ForApplication;
 import com.waygo.network.ServiceDataLayer;
 import com.waygo.network.fetchers.Fetcher;
@@ -22,52 +20,31 @@ import dagger.Provides;
 public final class DataStoreModule {
 
     @Provides
-    public DataLayer.GetUserSettings provideGetUserSettings(DataLayer dataLayer) {
-        return dataLayer::getUserSettings;
+    public DataLayer.GetFlightStatus provideGetFlightStatus(DataLayer dataLayer) {
+        return dataLayer::getFlightStatus;
     }
 
     @Provides
-    public DataLayer.SetUserSettings provideSetUserSettings(DataLayer dataLayer) {
-        return dataLayer::setUserSettings;
-    }
-
-    @Provides
-    public DataLayer.FetchAndGetGitHubRepository provideFetchAndGetGitHubRepository(DataLayer dataLayer) {
-        return dataLayer::fetchAndGetGitHubRepository;
-    }
-
-    @Provides
-    public DataLayer.GetGitHubRepositorySearch provideGetGitHubRepositorySearch(DataLayer dataLayer) {
-        return dataLayer::fetchAndGetGitHubRepositorySearch;
-    }
-
-    @Provides
-    public DataLayer.GetGitHubRepository provideGetGitHubRepository(DataLayer dataLayer) {
-        return dataLayer::getGitHubRepository;
+    public DataLayer.FetchAndGetGetFlightStatus provideFetchAndGetGetFlightStatus(DataLayer dataLayer) {
+        return dataLayer::fetchAndGetFlightStatus;
     }
 
     @Provides
     @Singleton
     public DataLayer provideApplicationDataLayer(@ForApplication Context context,
-                                                 UserSettingsStore userSettingsStore,
                                                  NetworkRequestStatusStore networkRequestStatusStore,
-                                                 GitHubRepositoryStore gitHubRepositoryStore,
-                                                 GitHubRepositorySearchStore gitHubRepositorySearchStore) {
-        return new DataLayer(context, userSettingsStore, networkRequestStatusStore, gitHubRepositoryStore, gitHubRepositorySearchStore);
+                                                 FlightStatusStore flightStatusStore) {
+        return new DataLayer(context, networkRequestStatusStore, flightStatusStore);
     }
 
     @Provides
     @Singleton
-    public ServiceDataLayer provideServiceDataLayer(@Named("gitHubRepository")Fetcher gitHubRepositoryFetcher,
-                                                    @Named("gitHubRepositorySearch") Fetcher gitHubRepositorySearchFetcher,
+    public ServiceDataLayer provideServiceDataLayer(@Named("flightStatus") Fetcher flightStatusFetcher,
                                                     NetworkRequestStatusStore networkRequestStatusStore,
-                                                    GitHubRepositoryStore gitHubRepositoryStore,
-                                                    GitHubRepositorySearchStore gitHubRepositorySearchStore) {
-        return new ServiceDataLayer(gitHubRepositoryFetcher,
-                                    gitHubRepositorySearchFetcher,
+                                                    FlightStatusStore flightStatusStore) {
+        return new ServiceDataLayer(flightStatusFetcher,
                                     networkRequestStatusStore,
-                                    gitHubRepositoryStore,
-                                    gitHubRepositorySearchStore);
+                                    flightStatusStore);
     }
 
 }

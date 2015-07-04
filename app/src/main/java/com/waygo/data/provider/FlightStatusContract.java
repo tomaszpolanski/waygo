@@ -1,22 +1,23 @@
 package com.waygo.data.provider;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import com.waygo.data.base.contract.SerializedJsonContract;
+import com.waygo.pojo.flightstatus.Flight;
+
 import android.content.ContentValues;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.waygo.data.base.contract.SerializedJsonContract;
-import com.waygo.pojo.GitHubRepository;
 
 import java.lang.reflect.Type;
 
 import rx.android.internal.Preconditions;
 
-public class GitHubRepositoryContract extends SerializedJsonContract<GitHubRepository> {
-    private static final String TABLE_NAME = "repositories";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + GithubContentProvider.PROVIDER_NAME + "/" + TABLE_NAME);
-    private static final Type TYPE = new TypeToken<GitHubRepository>() {}.getType();
+public class FlightStatusContract extends SerializedJsonContract<Flight> {
+    private static final String TABLE_NAME = "flight_status";
+    public static final Uri CONTENT_URI = Uri.parse("content://" + LufthansaContentProvider.PROVIDER_NAME + "/" + TABLE_NAME);
+    private static final Type TYPE = new TypeToken<Flight>() {}.getType();
 
     @NonNull
     @Override
@@ -27,13 +28,13 @@ public class GitHubRepositoryContract extends SerializedJsonContract<GitHubRepos
     @NonNull
     @Override
     protected String getCreateIdColumn() {
-        return ID + " INTEGER PRIMARY KEY AUTOINCREMENT";
+        return ID + " VARCHAR(20)";
     }
 
     @NonNull
     @Override
-    public ContentValues getContentValuesForItem(@NonNull GitHubRepository item) {
-        Preconditions.checkNotNull(item, "Github Repository cannot be null.");
+    public ContentValues getContentValuesForItem(@NonNull Flight item) {
+        Preconditions.checkNotNull(item, "Flight cannot be null.");
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID, item.getId());

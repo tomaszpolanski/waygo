@@ -2,9 +2,7 @@ package com.waygo.activities;
 
 import com.waygo.R;
 import com.waygo.WaygoApplication;
-import com.waygo.data.DataLayer;
 import com.waygo.fragments.RepositoryFragment;
-import com.waygo.pojo.UserSettings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,16 +27,11 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private DrawerLayout mDrawerLayout;
-
-    @Inject
-    DataLayer.SetUserSettings setUserSettings;
 
     public MainActivity() {
         WaygoApplication.getInstance().getGraph().inject(this);
@@ -120,24 +113,24 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult");
-        if (data == null) {
-            Log.d(TAG, "No data from onActivityResult");
-            return;
-        }
-        final int repositoryId = data.getIntExtra("repositoryId", 0);
-        if (repositoryId == 0) {
-            Log.e(TAG, "Invalid repositoryId from onActivityResult");
-            return;
-        }
-        Log.d(TAG, "New repositoryId: " + repositoryId);
-        // We should probably send an intent to update the widget
-        // in case its service is not alive anymore. This works as
-        // long as it is alive, though.
-        setUserSettings.call(new UserSettings(repositoryId));
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d(TAG, "onActivityResult");
+//        if (data == null) {
+//            Log.d(TAG, "No data from onActivityResult");
+//            return;
+//        }
+//        final int repositoryId = data.getIntExtra("repositoryId", 0);
+//        if (repositoryId == 0) {
+//            Log.e(TAG, "Invalid repositoryId from onActivityResult");
+//            return;
+//        }
+//        Log.d(TAG, "New repositoryId: " + repositoryId);
+//        // We should probably send an intent to update the widget
+//        // in case its service is not alive anymore. This works as
+//        // long as it is alive, though.
+//        setUserSettings.call(new UserSettings(repositoryId));
+//    }
 
     static class Adapter extends FragmentPagerAdapter {
 

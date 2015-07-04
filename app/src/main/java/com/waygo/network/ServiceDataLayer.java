@@ -1,8 +1,7 @@
 package com.waygo.network;
 
 import com.waygo.data.DataLayerBase;
-import com.waygo.data.stores.GitHubRepositorySearchStore;
-import com.waygo.data.stores.GitHubRepositoryStore;
+import com.waygo.data.stores.FlightStatusStore;
 import com.waygo.data.stores.NetworkRequestStatusStore;
 import com.waygo.network.fetchers.Fetcher;
 
@@ -12,8 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import rx.android.internal.Preconditions;
 
@@ -23,22 +22,14 @@ public class ServiceDataLayer extends DataLayerBase {
     @NonNull
     final private Collection<Fetcher> fetchers;
 
-    public ServiceDataLayer(@NonNull Fetcher gitHubRepositoryFetcher,
-                            @NonNull Fetcher gitHubRepositorySearchFetcher,
+    public ServiceDataLayer(@NonNull Fetcher flightStatusFetcher,
                             @NonNull NetworkRequestStatusStore networkRequestStatusStore,
-                            @NonNull GitHubRepositoryStore gitHubRepositoryStore,
-                            @NonNull GitHubRepositorySearchStore gitHubRepositorySearchStore) {
-        super(networkRequestStatusStore, gitHubRepositoryStore, gitHubRepositorySearchStore);
+                            @NonNull FlightStatusStore flightStatusStore) {
+        super(networkRequestStatusStore, flightStatusStore);
 
-        Preconditions.checkNotNull(gitHubRepositoryFetcher,
-                                   "GitHub Repository Fetcher cannot be null.");
-        Preconditions.checkNotNull(gitHubRepositorySearchFetcher,
-                                   "GitHub Repository Search Fetcher cannot be null.");
+        Preconditions.checkNotNull(flightStatusFetcher, "Flight Status Fetcher cannot be null.");
 
-        fetchers = Arrays.asList(
-                gitHubRepositoryFetcher,
-                gitHubRepositorySearchFetcher
-        );
+        fetchers = Collections.singletonList(flightStatusFetcher);
     }
 
     public void processIntent(@NonNull Intent intent) {
