@@ -4,6 +4,7 @@ import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.data.model.conversation.Person;
 import com.waygo.data.model.conversation.User;
+import com.waygo.data.model.conversation.Waygo;
 import com.waygo.utils.Instrumentation;
 import com.waygo.utils.RxBinderUtil;
 import com.waygo.viewmodels.ChatViewModel;
@@ -137,12 +138,15 @@ public class ChatListFragment extends Fragment {
 
             public final TextView mDateTextView;
 
+            public final ImageView mMapImageView;
+
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mImageView = (ImageView) view.findViewById(R.id.avatar);
                 mTextView = (TextView) view.findViewById(R.id.text);
                 mDateTextView = (TextView) view.findViewById(R.id.date);
+                mMapImageView = (ImageView) view.findViewById(R.id.map);
             }
         }
 
@@ -175,6 +179,11 @@ public class ChatListFragment extends Fragment {
                     .getUserImage()
                     .iter(id -> holder.mImageView.setImageResource(id));
 
+            if (mPersons.get(position) instanceof Waygo) {
+                ((Waygo) mPersons.get(position)).getImage()
+                                                .iter(__ -> holder.mMapImageView
+                                                        .setVisibility(View.VISIBLE));
+            }
         }
 
         @Override
