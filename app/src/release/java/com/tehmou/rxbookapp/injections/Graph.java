@@ -3,7 +3,6 @@ package com.waygo.injections;
 import com.waygo.WaygoApplication;
 import com.waygo.activities.MainActivity;
 import com.waygo.data.DataStoreModule;
-import com.waygo.fragments.RepositoryFragment;
 import com.waygo.network.NetworkService;
 import com.waygo.viewmodels.RepositoryViewModel;
 import com.waygo.viewmodels.ViewModelModule;

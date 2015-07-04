@@ -4,7 +4,6 @@ import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.fragments.AgendaListFragment;
 import com.waygo.fragments.ChatListFragment;
-import com.waygo.fragments.RepositoryFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
         fab.setVisibility(View.GONE);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -74,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.sample_actions, menu);
         return true;
     }
 
@@ -102,12 +98,6 @@ public class MainActivity extends AppCompatActivity {
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
-    }
-
-    public void chooseRepository() {
-        Log.d(TAG, "chooseRepository");
-        Intent intent = new Intent(this, ChooseRepositoryActivity.class);
-        startActivityForResult(intent, 0);
     }
 
     static class Adapter extends FragmentPagerAdapter {
