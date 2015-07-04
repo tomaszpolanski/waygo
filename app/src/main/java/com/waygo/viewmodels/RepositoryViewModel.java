@@ -53,7 +53,6 @@ public class RepositoryViewModel extends AbstractViewModel {
                                                   .map(Result::asOption), Option::id);
         mCalendar = Calendar.getInstance();
         mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-//        mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
     }
 
     @Override
