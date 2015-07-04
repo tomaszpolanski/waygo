@@ -71,7 +71,7 @@ public final class Some<T> extends Option<T> {
         return type.isInstance(mValue) ? Option.asOption(type.cast(mValue)) : Option.NONE;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <OUT> OUT match(@NonNull Func1<T, OUT> fSome,
                            @NonNull Func0<OUT> fNone) {

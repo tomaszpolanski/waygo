@@ -2,7 +2,9 @@ package com.waygo.viewmodels;
 
 import com.waygo.data.DataLayer;
 import com.waygo.data.DataStreamNotification;
+import com.waygo.data.model.butler.ButlerResponse;
 import com.waygo.data.model.fuel.Fuel;
+import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.pojo.flightstatus.Flight;
 import com.waygo.utils.ObservableEx;
@@ -11,6 +13,8 @@ import com.waygo.utils.result.Result;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
+import java.security.PublicKey;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,6 +26,7 @@ import rx.android.internal.Preconditions;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
 public class RepositoryViewModel extends AbstractViewModel {
@@ -32,17 +37,25 @@ public class RepositoryViewModel extends AbstractViewModel {
 
     private final DataLayer.FetchAndGetGetFlightStatus mFetchAndGetFlight;
 
-    final private BehaviorSubject<Flight> mFlightSubject = BehaviorSubject.create();
+    private final BehaviorSubject<Flight> mFlightSubject = BehaviorSubject.create();
+
+    private final PublishSubject<String> mQuestion = PublishSubject.create();
+
+    private final PublishSubject<String> mQuestionResponse = PublishSubject.create();
 
     private final Observable<Fuel> mFuel;
+    @NonNull
+    private final IButler mButtler;
 
     private final Calendar mCalendar;
 
     private final SimpleDateFormat mDateFormat;
 
-    public RepositoryViewModel(@NonNull DataLayer.GetFlightStatus getFlightStatus,
-                               @NonNull DataLayer.FetchAndGetGetFlightStatus fetchAndGetFlight,
-                               @NonNull ILogBoxProvider logBoxProvider) {
+    public RepositoryViewModel(@NonNull final DataLayer.GetFlightStatus getFlightStatus,
+                               @NonNull final DataLayer.FetchAndGetGetFlightStatus fetchAndGetFlight,
+                               @NonNull final ILogBoxProvider logBoxProvider,
+                               @NonNull final IButler buttler) {
+        mButtler = buttler;
         Preconditions.checkNotNull(getFlightStatus, "Get Flight Status cannot be null.");
         Preconditions.checkNotNull(fetchAndGetFlight,
                                    "Fetch And Get Flight Status cannot be null.");
@@ -71,6 +84,15 @@ public class RepositoryViewModel extends AbstractViewModel {
                           .subscribe(mFlightSubject::onNext,
                                      throwable -> Log.e(TAG, "Flight error: ",
                                                         throwable)));
+        final Observable<Result<ButlerResponse>> butlerResponse =
+                mQuestion.switchMap(mButtler::ask)
+                .share();
+
+        final Observable<String> validResponse = ObservableEx.choose(butlerResponse, Result::asOption)
+                .map(ButlerResponse::getMessage);
+
+        subscriptions.add(validResponse.subscribe(mQuestionResponse));
+        subscriptions.add(ObservableEx.defineError(butlerResponse).subscribe(mQuestionResponse));
     }
 
     @NonNull
@@ -88,4 +110,13 @@ public class RepositoryViewModel extends AbstractViewModel {
         return mFuel;
     }
 
+    @NonNull
+    public Observable<String> getResponse() {
+        return mQuestionResponse;
+    }
+
+
+    public void askButler(@NonNull final String question) {
+        mQuestion.onNext(question);
+    }
 }

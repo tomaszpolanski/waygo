@@ -1,6 +1,7 @@
 package com.waygo.viewmodels;
 
 import com.waygo.data.DataLayer;
+import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 
 import dagger.Module;
@@ -12,8 +13,9 @@ public class ViewModelModule {
     @Provides
     public RepositoryViewModel provideRepositoryViewModel(DataLayer.GetFlightStatus getFlightStatus,
                                                           DataLayer.FetchAndGetGetFlightStatus fetchAndGetGetFlightStatus,
-                                                          ILogBoxProvider logBoxProvider) {
-        return new RepositoryViewModel(getFlightStatus, fetchAndGetGetFlightStatus, logBoxProvider);
+                                                          ILogBoxProvider logBoxProvider,
+                                                          IButler butler) {
+        return new RepositoryViewModel(getFlightStatus, fetchAndGetGetFlightStatus, logBoxProvider, butler);
     }
 
 }

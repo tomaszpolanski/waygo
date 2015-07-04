@@ -4,9 +4,11 @@ import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import com.waygo.data.provider.FakeButler;
 import com.waygo.data.provider.FakeLocationProvider;
 import com.waygo.data.provider.FakeLogBoxProvider;
 import com.waygo.data.provider.SchedulerProvider;
+import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ILocationProvider;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
@@ -54,6 +56,12 @@ public class ApplicationModule {
     @Singleton
     ILogBoxProvider providesLogBoxProvider(ISchedulerProvider schedulerProvider) {
         return new FakeLogBoxProvider(schedulerProvider);
+    }
+
+    @Provides
+    @Singleton
+    IButler providesButtler(ISchedulerProvider schedulerProvider) {
+        return new FakeButler(application.getResources(), schedulerProvider );
     }
 
     @Provides

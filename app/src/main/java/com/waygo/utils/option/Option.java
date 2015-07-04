@@ -57,7 +57,7 @@ public abstract class Option<T> {
         }
     }
 
-    @Nullable
+    @NonNull
     public abstract <OUT> OUT match(@NonNull final Func1<T, OUT> fSome,
                                     @NonNull final Func0<OUT> fNone);
 

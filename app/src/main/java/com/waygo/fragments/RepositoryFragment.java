@@ -15,6 +15,7 @@ import com.waygo.data.model.fuel.Fuel;
 import com.waygo.network.LufthansaAccountService;
 import com.waygo.network.ServiceGenerator;
 import com.waygo.utils.Instrumentation;
+import com.waygo.utils.SubscriptionUtils;
 import com.waygo.view.RepositoryView;
 import com.waygo.viewmodels.RepositoryViewModel;
 
@@ -60,19 +61,11 @@ public class RepositoryFragment extends Fragment {
         view.findViewById(R.id.repository_fragment_choose_repository_button)
                 .setOnClickListener(e -> ((MainActivity) getActivity()).chooseRepository());
 
-        final TextView tv = (TextView)view.findViewById(R.id.testField);
-        Observable<Fuel> f = viewModel.getFuel();
-        s = f
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Fuel>() {
-                    @Override
-                    public void call(Fuel f) {
-                        tv.setText(f.getValue() + "");
-                    }
-                });
-    }
+        SubscriptionUtils.subscribeTextViewText(viewModel.getResponse(), (TextView) view.findViewById(R.id.testField));
 
-    Subscription s;
+        viewModel.askButler("where to go?");
+
+    }
 
     @Override
     public void onResume() {
