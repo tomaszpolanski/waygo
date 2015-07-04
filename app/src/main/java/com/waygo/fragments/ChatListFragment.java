@@ -1,26 +1,30 @@
 package com.waygo.fragments;
 
+import com.waygo.R;
+import com.waygo.WaygoApplication;
+import com.waygo.data.model.conversation.Person;
+import com.waygo.data.model.conversation.User;
+import com.waygo.utils.Instrumentation;
+import com.waygo.utils.RxBinderUtil;
+import com.waygo.viewmodels.ChatViewModel;
+
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.waygo.R;
-import com.waygo.WaygoApplication;
-import com.waygo.utils.Instrumentation;
-import com.waygo.viewmodels.ChatViewModel;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,11 +33,17 @@ public class ChatListFragment extends Fragment {
 
     private static final String TAG = ChatListFragment.class.getSimpleName();
 
+    private final RxBinderUtil rxBinderUtil = new RxBinderUtil(this);
+
     @Inject
     ChatViewModel viewModel;
 
     @Inject
     Instrumentation instrumentation;
+
+    private ChatListAdapter adapter;
+
+    private RecyclerView mRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,20 +53,10 @@ public class ChatListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout rv = (RelativeLayout) inflater.inflate(R.layout.chat_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rv = inflater.inflate(R.layout.chat_list, container, false);
         setupRecyclerView((RecyclerView) rv.findViewById(R.id.recycler_chat_view));
-        final EditText askField = (EditText) rv.findViewById(R.id.ask_field);
-        askField.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                    actionId == EditorInfo.IME_ACTION_DONE ||
-                    event.getAction() == KeyEvent.ACTION_DOWN &&
-                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
-                askField.setText("");
-            }
-            return false;
-        });
 
         return rv;
     }
@@ -68,112 +68,129 @@ public class ChatListFragment extends Fragment {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+        adapter = new ChatListAdapter(getActivity(), new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(),
-                Arrays.asList("1", "2")));
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void setViewModel(@Nullable ChatViewModel viewModel) {
+        rxBinderUtil.clear();
+        if (viewModel != null) {
+            rxBinderUtil.bindProperty(viewModel.getConversation(), this::setConversation);
+        }
+    }
+
+    private void setConversation(Person person) {
+        adapter.addConversation(person);
+        mRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        repositoryView.setViewModel(viewModel);
+        setViewModel(viewModel);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        repositoryView.setViewModel(null);
+        setViewModel(null);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        viewModel.unsubscribeFromDataStore();
+        viewModel.unsubscribeFromDataStore();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        viewModel.dispose();
-//        viewModel = null;
+        viewModel.dispose();
+        viewModel = null;
         instrumentation.getLeakTracing().traceLeakage(this);
     }
 
-    public static class SimpleStringRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleStringRecyclerViewAdapter.ViewHolder> {
+    public static class ChatListAdapter
+            extends RecyclerView.Adapter<ChatListAdapter.ViewHolder> {
 
         private final TypedValue mTypedValue = new TypedValue();
+
+        private final List<Person> mPersons;
+
         private int mBackground;
-        private List<String> mValues;
+
+        public void addConversation(Person person) {
+            mPersons.add(person);
+            notifyDataSetChanged();
+            notifyItemInserted(mPersons.size() - 1);
+        }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            public String mBoundString;
 
             public final View mView;
+
+            public final ImageView mImageView;
+
             public final TextView mTextView;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mTextView = (TextView) view.findViewById(R.id.info_text);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mTextView.getText();
+                mImageView = (ImageView) view.findViewById(R.id.avatar);
+                mTextView = (TextView) view.findViewById(R.id.text);
             }
         }
 
-        public SimpleStringRecyclerViewAdapter(Context context, List<String> items) {
+        public ChatListAdapter(Context context, List<Person> persons) {
             context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.resourceId;
-            mValues = items;
+            mPersons = persons;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item, parent, false);
+                                      .inflate(getLayout(viewType), parent, false);
             view.setBackgroundResource(mBackground);
             return new ViewHolder(view);
         }
 
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            switch (getItemViewType(position)) {
-                default:
-                    setupViewHolder(holder, position);
-            }
+        private int getLayout(int viewType) {
+            return ViewType.values()[viewType].resourceId;
         }
 
-        private void setupViewHolder(ViewHolder holder, int position) {
-            holder.mBoundString = mValues.get(position);
-            holder.mTextView.setText(mValues.get(position));
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Context context = v.getContext();
-//                    Intent intent = new Intent(context, CheeseDetailActivity.class);
-//                    intent.putExtra(CheeseDetailActivity.EXTRA_NAME, holder.mBoundString);
-//
-//                    context.startActivity(intent);
-                }
-            });
-
-//            Glide.with(holder.mImageView.getContext())
-//                 .load(Cheeses.getRandomCheeseDrawable())
-//                 .fitCenter()
-//                 .into(holder.mImageView);
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.mTextView.setText(Html.fromHtml(mPersons.get(position).getSentence()));
         }
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return mPersons.size();
         }
 
         public int getItemViewType(int position) {
-            return 0;
+            return mPersons.get(position) instanceof User
+                    ? ViewType.USER.ordinal()
+                    : ViewType.WAY_GO.ordinal() ;
         }
     }
+
+    enum ViewType {
+
+        USER(R.layout.user_item),
+        WAY_GO(R.layout.waygo_item);
+
+        private
+        @IdRes
+        int resourceId;
+
+        ViewType(int resourceId) {
+            this.resourceId = resourceId;
+        }
+
+    }
+
 }
