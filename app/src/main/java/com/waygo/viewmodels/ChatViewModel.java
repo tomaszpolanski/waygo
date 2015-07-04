@@ -21,11 +21,11 @@ public class ChatViewModel extends AbstractViewModel {
     private final PublishSubject<String> mQuestionResponse = PublishSubject.create();
 
     @NonNull
-    private final IButler mButtler;
+    private final IButler mButler;
 
 
     public ChatViewModel( @NonNull final IButler buttler) {
-        mButtler = buttler;
+        mButler = buttler;
 
     }
 
@@ -33,7 +33,7 @@ public class ChatViewModel extends AbstractViewModel {
     protected void subscribeToDataStoreInternal(@NonNull CompositeSubscription subscriptions) {
 
         final Observable<Result<ButlerResponse>> butlerResponse =
-                mQuestion.switchMap(mButtler::ask)
+                mQuestion.switchMap(mButler::ask)
                         .share();
 
         final Observable<String> validResponse = ObservableEx.choose(butlerResponse, Result::asOption)

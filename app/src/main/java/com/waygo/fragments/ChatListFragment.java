@@ -6,9 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.waygo.R;
@@ -43,8 +47,21 @@ public class ChatListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView rv = (RecyclerView) inflater.inflate(R.layout.agenda_list, container, false);
-        setupRecyclerView(rv);
+        RelativeLayout rv = (RelativeLayout) inflater.inflate(R.layout.chat_list, container, false);
+        setupRecyclerView((RecyclerView) rv.findViewById(R.id.recycler_chat_view));
+        final EditText askField = (EditText) rv.findViewById(R.id.ask_field);
+        askField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    event.getAction() == KeyEvent.ACTION_DOWN &&
+                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                viewModel.askButler(askField.getText().toString());
+                askField.setText("");
+            }
+            return false;
+        });
+
         return rv;
     }
 
@@ -127,7 +144,8 @@ public class ChatListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             switch (getItemViewType(position)) {
-                default: setupViewHolder(holder, position);
+                default:
+                    setupViewHolder(holder, position);
             }
         }
 
@@ -157,7 +175,7 @@ public class ChatListFragment extends Fragment {
             return mValues.size();
         }
 
-        public int getItemViewType (int position) {
+        public int getItemViewType(int position) {
             return 0;
         }
     }

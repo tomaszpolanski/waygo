@@ -7,6 +7,7 @@ import com.waygo.fragments.AgendaListFragment;
 import com.waygo.fragments.ChatListFragment;
 import com.waygo.fragments.RepositoryFragment;
 import com.waygo.network.NetworkService;
+import com.waygo.viewmodels.ChatViewModel;
 import com.waygo.viewmodels.RepositoryViewModel;
 import com.waygo.viewmodels.ViewModelModule;
 import com.waygo.widget.WidgetService;
@@ -23,6 +24,7 @@ import dagger.Component;
 public interface Graph {
 
     void inject(RepositoryViewModel widgetService);
+    void inject(ChatViewModel chatViewModel);
     void inject(WidgetService widgetService);
     void inject(MainActivity mainActivity);
     void inject(RepositoryFragment repositoryFragment);

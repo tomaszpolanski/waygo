@@ -18,4 +18,9 @@ public class ViewModelModule {
         return new RepositoryViewModel(getFlightStatus, fetchAndGetGetFlightStatus, logBoxProvider, butler);
     }
 
+    @Provides
+    public ChatViewModel provideChatViewModel( IButler butler) {
+        return new ChatViewModel( butler);
+    }
+
 }

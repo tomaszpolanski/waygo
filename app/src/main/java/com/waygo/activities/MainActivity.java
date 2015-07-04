@@ -3,6 +3,7 @@ package com.waygo.activities;
 import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.fragments.AgendaListFragment;
+import com.waygo.fragments.ChatListFragment;
 import com.waygo.fragments.RepositoryFragment;
 
 import android.content.Intent;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new AgendaListFragment(), "What's next?");
         adapter.addFragment(new RepositoryFragment(), "Category 1");
-        adapter.addFragment(new RepositoryFragment(), "Category 3");
+        adapter.addFragment(new ChatListFragment(), "Category 3");
         viewPager.setAdapter(adapter);
     }
 
