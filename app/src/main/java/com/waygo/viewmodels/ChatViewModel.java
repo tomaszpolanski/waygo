@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
@@ -24,7 +25,7 @@ public class ChatViewModel extends AbstractViewModel {
 
     private static final String TAG = ChatViewModel.class.getSimpleName();
 
-    private final PublishSubject<Person> mConversation = PublishSubject.create();
+    private final BehaviorSubject<Person> mConversation = BehaviorSubject.create();
 
     @NonNull
     private final IButler mButler;

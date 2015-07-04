@@ -135,11 +135,14 @@ public class ChatListFragment extends Fragment {
 
             public final TextView mTextView;
 
+            public final TextView mDateTextView;
+
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mImageView = (ImageView) view.findViewById(R.id.avatar);
                 mTextView = (TextView) view.findViewById(R.id.text);
+                mDateTextView = (TextView) view.findViewById(R.id.date);
             }
         }
 
@@ -164,6 +167,7 @@ public class ChatListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mTextView.setText(Html.fromHtml(mPersons.get(position).getSentence()));
+            holder.mDateTextView.setText(mPersons.get(position).getTime());
         }
 
         @Override
