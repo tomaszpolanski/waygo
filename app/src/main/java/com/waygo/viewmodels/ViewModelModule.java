@@ -21,7 +21,12 @@ public class ViewModelModule {
 
     @Provides
     public ChatViewModel provideChatViewModel( IButler butler, ISchedulerProvider schedulerProvider) {
-        return new ChatViewModel( butler, schedulerProvider);
+        return new ChatViewModel(butler, schedulerProvider);
+    }
+
+    @Provides
+    public AgendaViewModel provideAgendaViewModel(DataLayer.FetchAndGetGetFlightStatus fetchAndGetFlight) {
+        return new AgendaViewModel(fetchAndGetFlight);
     }
 
 }

@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
-                    android:text="Madrid - Bogotá"
+                    android:text="Frankfurt - Bogotá"
                     android:textSize="16sp"
                     android:layout_toRightOf="@id/image"
                     android:textColor="@android:color/black"/>
