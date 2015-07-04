@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
+        adapter.addFragment(new AgendaListFragment(), "What's next?");
         adapter.addFragment(new RepositoryFragment(), "Category 1");
-        adapter.addFragment(new AgendaListFragment(), "Category 2");
         adapter.addFragment(new RepositoryFragment(), "Category 3");
         viewPager.setAdapter(adapter);
     }
