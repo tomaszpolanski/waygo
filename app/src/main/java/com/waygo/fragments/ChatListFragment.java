@@ -15,6 +15,7 @@ import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.utils.Instrumentation;
 import com.waygo.view.RepositoryView;
+import com.waygo.viewmodels.ChatViewModel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +28,8 @@ public class ChatListFragment extends Fragment {
 
     private RepositoryView repositoryView;
 
-//    @Inject
-//    RepositoryViewModel viewModel;
+    @Inject
+    ChatViewModel viewModel;
 
     @Inject
     Instrumentation instrumentation;
