@@ -91,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new AgendaListFragment(), "What's next?");
-        adapter.addFragment(new RepositoryFragment(), "Category 1");
-        adapter.addFragment(new ChatListFragment(), "Category 3");
+        adapter.addFragment(new ChatListFragment(), "Chat");
         viewPager.setAdapter(adapter);
     }
 
@@ -110,25 +109,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChooseRepositoryActivity.class);
         startActivityForResult(intent, 0);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.d(TAG, "onActivityResult");
-//        if (data == null) {
-//            Log.d(TAG, "No data from onActivityResult");
-//            return;
-//        }
-//        final int repositoryId = data.getIntExtra("repositoryId", 0);
-//        if (repositoryId == 0) {
-//            Log.e(TAG, "Invalid repositoryId from onActivityResult");
-//            return;
-//        }
-//        Log.d(TAG, "New repositoryId: " + repositoryId);
-//        // We should probably send an intent to update the widget
-//        // in case its service is not alive anymore. This works as
-//        // long as it is alive, though.
-//        setUserSettings.call(new UserSettings(repositoryId));
-//    }
 
     static class Adapter extends FragmentPagerAdapter {
 
