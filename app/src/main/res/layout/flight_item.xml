@@ -74,7 +74,7 @@
                     android:textSize="13sp"
                     android:padding="8dp"
                     android:gravity="center"
-                    android:background="#65d9a6"/>
+                    android:background="#6BB7B5"/>
 
         </RelativeLayout>
 
