@@ -56,7 +56,6 @@ public class ChatListFragment extends Fragment {
                     event.getAction() == KeyEvent.ACTION_DOWN &&
                             event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-                viewModel.askButler(askField.getText().toString());
                 askField.setText("");
             }
             return false;

@@ -3,7 +3,9 @@ package com.waygo.viewmodels;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.waygo.data.model.butler.ButlerResponse;
+import com.waygo.data.model.conversation.Person;
+import com.waygo.data.model.conversation.User;
+import com.waygo.data.model.conversation.Waygo;
 import com.waygo.data.provider.FakeButler;
 import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
@@ -11,8 +13,6 @@ import com.waygo.utils.Linq;
 import com.waygo.utils.ObservableEx;
 import com.waygo.utils.result.Result;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -23,10 +23,7 @@ public class ChatViewModel extends AbstractViewModel {
 
     private static final String TAG = ChatViewModel.class.getSimpleName();
 
-
-    private final PublishSubject<String> mQuestion = PublishSubject.create();
-
-    private final PublishSubject<String> mQuestionResponse = PublishSubject.create();
+    private final PublishSubject<Person> mConversation = PublishSubject.create();
 
     @NonNull
     private final IButler mButler;
@@ -52,6 +49,7 @@ public class ChatViewModel extends AbstractViewModel {
         return list;
     }
 
+    @NonNull
     private String getQuestion() {
         final String question = mQuestionsList.first().orDefault(() -> "");
         mQuestionsList = mQuestionsList.skip(1);
@@ -60,33 +58,26 @@ public class ChatViewModel extends AbstractViewModel {
 
     @Override
     protected void subscribeToDataStoreInternal(@NonNull CompositeSubscription subscriptions) {
-        final Observable<String> questions =  Observable.interval(10, TimeUnit.SECONDS, mSchedulerProvider.getTimeScheduler())
+        final Observable<Person> questions =  Observable.interval(3, TimeUnit.SECONDS, mSchedulerProvider.getTimeScheduler())
                 .map(__ -> getQuestion())
                 .filter(a -> !a.isEmpty())
+                .map(sentence -> new User(sentence))
+                .ofType(Person.class)
                 .share();
 
-        final Observable<String> answers = questions.switchMap(s -> ObservableEx.choose(mButler.ask(s), Result::asOption))
-                 .map(ButlerResponse::getMessage);
+        final Observable<Person> answers = questions.switchMap(s -> ObservableEx.choose(mButler.ask(s.getSentence()), Result::asOption))
+                 .map(response -> new Waygo(response))
+                 .ofType(Person.class);
 
-//        mConversation
-//                .switchMap(text -> ObservableEx.choose(butler.ask(text), Result::asOption) );
-//
-//        final Observable<String> validResponse = ObservableEx.choose(butlerResponse, Result::asOption)
-//                .map(ButlerResponse::getMessage);
+        final Observable<Person> conversation =
+                questions.mergeWith(answers).startWith(new Waygo("Ola, Jen. Welcome to Madrid."));
 
-        //subscriptions.add(mConversation.subscribe(mQuestionResponse));
-        subscriptions.add(questions.subscribe(a -> Log.e("QQQ", a)));
-        subscriptions.add(answers.subscribe(a -> Log.e("QQQ", a)));
-       // subscriptions.add(ObservableEx.defineError(butlerResponse).subscribe(mQuestionResponse));
+        subscriptions.add(conversation.subscribe(mConversation));
     }
+
 
     @NonNull
-    public Observable<String> getResponse() {
-        return mQuestionResponse;
-    }
-
-
-    public void askButler(@NonNull final String question) {
-        mQuestion.onNext(question);
+    public Observable<Person> getConversation() {
+        return mConversation;
     }
 }
