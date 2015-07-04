@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
-                    android:text="Madrid - Bogotá"
+                    android:text="Berlin - Madrid"
                     android:textSize="16sp"
                     android:layout_toRightOf="@id/image"
                     android:textColor="@android:color/black"/>
@@ -47,7 +47,7 @@
                     android:id="@+id/flight_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="15:30 - 07:00"
+                    android:text="10:30 - 13:00"
                     android:textColor="@android:color/darker_gray"
                     android:layout_below="@+id/flight_locations"
                     android:layout_toRightOf="@id/image"
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/image"
-                    android:text="Departing Gate B29 - Landing Gate A1"
+                    android:text="Departing Gate A9 - Landing Gate C4"
                     android:textColor="@android:color/darker_gray"
                     android:layout_below="@+id/flight_time"
                     android:textSize="12sp"
@@ -68,13 +68,13 @@
                     android:id="@+id/flight_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Don't worry. Everything is alright."
+                    android:text="New Gate - A9"
                     android:textColor="@android:color/white"
                     android:layout_below="@+id/flight_status"
                     android:textSize="13sp"
                     android:padding="8dp"
                     android:gravity="center"
-                    android:background="#6BB7B5"/>
+                    android:background="#FFC219"/>
 
         </RelativeLayout>
 

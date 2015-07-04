@@ -2,4 +2,6 @@
 
 <resources>
     <color name="window_background">#FFF5F5F5</color>
+    <color name="primary">#6BB7B5</color>
+    <color name="primary_dark">#39615f</color>
 </resources>

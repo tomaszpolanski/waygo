@@ -22,6 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingRight="8dp"
                 android:layout_gravity="center_vertical">
 
             <ImageView android:id="@+id/image"
@@ -31,14 +33,14 @@
                        android:paddingRight="8dp"
                        android:paddingLeft="8dp"
                        android:layout_alignParentTop="true"
-                       android:src="@drawable/plane"/>
+                       android:src="@drawable/car"/>
 
             <TextView
                     android:id="@+id/flight_locations"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
-                    android:text="Madrid - Bogotá"
+                    android:text="Transi Suggestions"
                     android:textSize="16sp"
                     android:layout_toRightOf="@id/image"
                     android:textColor="@android:color/black"/>
@@ -47,34 +49,35 @@
                     android:id="@+id/flight_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="15:30 - 07:00"
+                    android:text="The fastest way to your hotel in by Cab. To be sure you travel safe, book a Cab with TAPPSI."
                     android:textColor="@android:color/darker_gray"
                     android:layout_below="@+id/flight_locations"
                     android:layout_toRightOf="@id/image"
                     android:textSize="12sp"/>
 
             <TextView
-                    android:id="@+id/flight_status"
+                    android:id="@+id/transit_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/image"
-                    android:text="Departing Gate B29 - Landing Gate A1"
+                    android:text="Tell me more"
                     android:textColor="@android:color/darker_gray"
                     android:layout_below="@+id/flight_time"
-                    android:textSize="12sp"
+                    android:paddingTop="3dp"
+                    android:textSize="11sp"
                     android:paddingBottom="4dp"/>
 
             <TextView
-                    android:id="@+id/flight_info"
+                    android:id="@+id/transit_more_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Don't worry. Everything is alright."
-                    android:textColor="@android:color/white"
-                    android:layout_below="@+id/flight_status"
-                    android:textSize="13sp"
-                    android:padding="8dp"
-                    android:gravity="center"
-                    android:background="#6BB7B5"/>
+                    android:visibility="gone"
+                    android:layout_toRightOf="@id/image"
+                    android:text="Tappsi is an e-hailing mobile app conceived for Latin American cities. Built around the unique needs of the Latin American markets, where safety, convenience and ease-of-use are paramount, Tappsi is a real solution to the difficulties of hailing a safe cab on the streets."
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_below="@+id/transit_more"
+                    android:textSize="11sp"
+                    android:paddingBottom="4dp"/>
 
         </RelativeLayout>
 

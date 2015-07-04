@@ -31,14 +31,14 @@
                        android:paddingRight="8dp"
                        android:paddingLeft="8dp"
                        android:layout_alignParentTop="true"
-                       android:src="@drawable/plane"/>
+                       android:src="@drawable/cloud"/>
 
             <TextView
                     android:id="@+id/flight_locations"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
-                    android:text="Madrid - Bogotá"
+                    android:text="Better wear a jacket"
                     android:textSize="16sp"
                     android:layout_toRightOf="@id/image"
                     android:textColor="@android:color/black"/>
@@ -47,34 +47,11 @@
                     android:id="@+id/flight_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="15:30 - 07:00"
+                    android:text="15º cloudy"
                     android:textColor="@android:color/darker_gray"
                     android:layout_below="@+id/flight_locations"
                     android:layout_toRightOf="@id/image"
                     android:textSize="12sp"/>
-
-            <TextView
-                    android:id="@+id/flight_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/image"
-                    android:text="Departing Gate B29 - Landing Gate A1"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_below="@+id/flight_time"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"/>
-
-            <TextView
-                    android:id="@+id/flight_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Don't worry. Everything is alright."
-                    android:textColor="@android:color/white"
-                    android:layout_below="@+id/flight_status"
-                    android:textSize="13sp"
-                    android:padding="8dp"
-                    android:gravity="center"
-                    android:background="#6BB7B5"/>
 
         </RelativeLayout>
 
