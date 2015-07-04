@@ -5,7 +5,7 @@ package com.waygo.network;
  */
 public class BaseResponse {
 
-    private String error = null;
+    private String error;
 
     public String getError() {
         return error;

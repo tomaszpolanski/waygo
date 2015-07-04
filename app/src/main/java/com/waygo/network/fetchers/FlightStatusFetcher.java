@@ -3,6 +3,8 @@ package com.waygo.network.fetchers;
 import com.waygo.data.stores.FlightStatusStore;
 import com.waygo.network.LufthansaAccountService;
 import com.waygo.pojo.NetworkRequestStatus;
+import com.waygo.pojo.flightstatus.BaseLufthansaResponse;
+import com.waygo.pojo.flightstatus.FlightStatusContainer;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,9 +12,12 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.android.internal.Preconditions;
 import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.observables.GroupedObservable;
 import rx.schedulers.Schedulers;
 
 public class FlightStatusFetcher extends FetcherBase {
@@ -58,8 +63,13 @@ public class FlightStatusFetcher extends FetcherBase {
                                               .subscribeOn(Schedulers.computation())
                                               .doOnError(doOnError(uri))
                                               .doOnCompleted(() -> completeRequest(uri))
+                                              .groupBy(BaseLufthansaResponse::isError)
+                                              .flatMap(error -> error.getKey()
+                                                      ? getError(error)
+                                                      : error)
                                               .map(flightStatusContainer -> flightStatusContainer
-                                                      .getmFlightStatusResource().getFlights()
+                                                      .getFlightStatusResource()
+                                                      .getFlights()
                                                       .getFlight())
                                               .subscribe(flightStatusStore::put,
                                                          e -> Log.e(TAG,
@@ -67,6 +77,17 @@ public class FlightStatusFetcher extends FetcherBase {
                                                                     + id, e));
         requestMap.put(id, subscription);
         startRequest(uri);
+    }
+
+    @NonNull
+    private Observable<FlightStatusContainer> getError(Observable<FlightStatusContainer> error) {
+        return error.flatMap(
+                flightStatusContainer -> Observable
+                        .error(new RuntimeException(
+                                flightStatusContainer
+                                        .getProcessingErrors()
+                                        .getProcessingError()
+                                        .getDescription())));
     }
 
     @NonNull

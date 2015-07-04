@@ -25,7 +25,7 @@ public final class ServiceGenerator {
 
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(baseUrl)
-                .setLogLevel(RestAdapter.LogLevel.NONE)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setLog(new AndroidLog(TAG))
                 .setClient(new OkClient(client));
 
