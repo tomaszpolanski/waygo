@@ -3,7 +3,9 @@ package com.waygo.data.model.conversation;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.waygo.R;
 import com.waygo.data.model.butler.ButlerResponse;
+import com.waygo.data.model.butler.ButlerSayResponse;
 import com.waygo.data.model.butler.ButlerShowResponse;
 import com.waygo.utils.option.Option;
 
@@ -13,12 +15,12 @@ public class Waygo extends Person {
     private final Option<Bitmap> mImage;
 
     public Waygo(@NonNull final ButlerResponse response) {
-        super(response.getMessage());
+        super(response.getMessage(), getUserImage(response));
         mImage = getBitmap(response);
     }
 
     public Waygo(@NonNull final String message) {
-        super(message);
+        super(message, Option.NONE);
         mImage = Option.NONE;
     }
 
@@ -33,5 +35,13 @@ public class Waygo extends Person {
         return Option.asOption(response)
                 .ofType(ButlerShowResponse.class)
                 .map(ButlerShowResponse::getImage);
+    }
+
+    @NonNull
+    private static Option<Integer> getUserImage(@NonNull final ButlerResponse response) {
+        return Option.asOption(response)
+                .ofType(ButlerSayResponse.class)
+                .map(__ -> R.drawable.logo)
+                .orOption(() -> Option.asOption(R.drawable.lady));
     }
 }
