@@ -2,8 +2,6 @@ package com.waygo.viewmodels;
 
 import com.waygo.data.DataLayer;
 import com.waygo.data.DataLayer.GetGitHubRepositorySearch;
-import com.waygo.pojo.GitHubRepository;
-import com.waygo.pojo.GitHubRepositorySearch;
 
 import org.junit.Before;
 import org.junit.Test;

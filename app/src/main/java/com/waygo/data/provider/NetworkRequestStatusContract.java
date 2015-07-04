@@ -16,7 +16,7 @@ import rx.android.internal.Preconditions;
 
 public class NetworkRequestStatusContract extends SerializedJsonContract<NetworkRequestStatus> {
     private static final String TABLE_NAME = "network_request_statuses";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + GithubContentProvider.PROVIDER_NAME + "/" + TABLE_NAME);
+    public static final Uri CONTENT_URI = Uri.parse("content://" + LufthansaContentProvider.PROVIDER_NAME + "/" + TABLE_NAME);
     private static final Type TYPE = new TypeToken<NetworkRequestStatus>() {}.getType();
 
     @NonNull

@@ -22,8 +22,8 @@
         <activity android:name=".activities.ChooseRepositoryActivity" />
 
         <provider
-            android:name=".data.provider.GithubContentProvider"
-            android:authorities="com.waygo.data.provider.GithubContentProvider"
+            android:name=".data.provider.LufthansaContentProvider"
+            android:authorities="com.waygo.data.provider.LufthansaContentProvider"
             android:exported="false">
         </provider>
 

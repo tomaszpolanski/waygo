@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 public class NetworkRequestStatusSingleRoute extends DatabaseRouteBase {
     private static final String MULTIPLE_MIME_TYPE =
-            "vnd.android.cursor.dir/vnd.tehmou.android.rxbookapp.networkrequeststatus";
+            "vnd.android.cursor.dir/vnd.waygo.android.networkrequeststatus";
 
     public NetworkRequestStatusSingleRoute(@NonNull final String tableName) {
         super(tableName);

@@ -1,8 +1,5 @@
 package com.waygo.viewmodels;
 
-import com.waygo.pojo.GitHubRepository;
-import com.waygo.pojo.UserSettings;
-
 import org.junit.Test;
 
 import rx.Observable;

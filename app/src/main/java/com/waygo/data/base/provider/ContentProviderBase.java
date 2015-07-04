@@ -53,8 +53,7 @@ abstract public class ContentProviderBase extends ContentProvider {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         final int match = URI_MATCHER.match(uri);
         String tableName = getTableName(match);
-        db.insertWithOnConflict(tableName,
-                null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         notifyChange(match, uri);
         return uri;
     }

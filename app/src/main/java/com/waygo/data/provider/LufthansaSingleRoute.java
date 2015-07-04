@@ -8,11 +8,11 @@ import com.waygo.data.base.route.DatabaseRouteBase;
 
 import rx.android.internal.Preconditions;
 
-public class UserSettingsSingleRoute extends DatabaseRouteBase {
+public class LufthansaSingleRoute extends DatabaseRouteBase {
     private static final String SINGLE_MIME_TYPE =
-            "vnd.android.cursor.item/vnd.tehmou.android.rxbookapp.usersettings";
+            "vnd.android.cursor.item/vnd.waygo.android.repository";
 
-    public UserSettingsSingleRoute(@NonNull final String tableName) {
+    public LufthansaSingleRoute(@NonNull final String tableName) {
         super(tableName);
     }
 
@@ -31,7 +31,7 @@ public class UserSettingsSingleRoute extends DatabaseRouteBase {
     public String getWhere(@NonNull Uri uri) {
         Preconditions.checkNotNull(uri, "URI cannot be null.");
 
-        return SerializedJsonContract.ID + " = " + uri.getLastPathSegment();
+        return SerializedJsonContract.ID + " = \"" + uri.getLastPathSegment() + "\"";
     }
 
     @NonNull

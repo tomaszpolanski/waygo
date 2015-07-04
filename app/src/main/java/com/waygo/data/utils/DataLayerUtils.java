@@ -4,6 +4,7 @@ import com.waygo.data.DataStreamNotification;
 import com.waygo.pojo.NetworkRequestStatus;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -25,7 +26,8 @@ public class DataLayerUtils {
                             @Override
                             public DataStreamNotification<T> call(NetworkRequestStatus networkRequestStatus) {
                                 if (networkRequestStatus.isError()) {
-                                    return DataStreamNotification.fetchingError();
+                                    return DataStreamNotification.fetchingError(
+                                            new RuntimeException(networkRequestStatus.getErrorMessage()));
                                 } else if (networkRequestStatus.isOngoing()) {
                                     return DataStreamNotification.fetchingStart();
                                 } else {

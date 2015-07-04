@@ -1,6 +1,6 @@
 package com.waygo.network.fetchers;
 
-import com.waygo.network.NetworkApi;
+import com.waygo.network.LufthansaAccountService;
 import com.waygo.pojo.NetworkRequestStatus;
 
 import android.support.annotation.NonNull;
@@ -19,11 +19,11 @@ abstract public class FetcherBase implements Fetcher {
 
     public static final int NO_ERROR_CODE = -1;
 
-    protected final NetworkApi networkApi;
+    protected final LufthansaAccountService networkApi;
     private final Action1<NetworkRequestStatus> updateNetworkRequestStatus;
-    protected final Map<Integer, Subscription> requestMap = new ConcurrentHashMap<>();
+    protected final Map<String, Subscription> requestMap = new ConcurrentHashMap<>();
 
-    public FetcherBase(@NonNull NetworkApi networkApi,
+    public FetcherBase(@NonNull LufthansaAccountService networkApi,
                        @NonNull Action1<NetworkRequestStatus> updateNetworkRequestStatus) {
         Preconditions.checkNotNull(networkApi, "Network Api cannot be null.");
         Preconditions.checkNotNull(updateNetworkRequestStatus, "Update Network Status cannot be null.");
