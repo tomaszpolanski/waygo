@@ -7,12 +7,9 @@
 
         <item android:title="Social">
             <menu>
-                <item android:icon="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-                    android:title="Facebook" />
-                <item android:icon="@drawable/abc_cab_background_top_material"
-                    android:title="Twitter" />
-                <item android:icon="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-                    android:title="Foursquare" />
+                <item  android:title="Facebook" />
+                <item  android:title="Twitter" />
+                <item  android:title="Foursquare" />
             </menu>
         </item>
 
