@@ -4,6 +4,7 @@ import com.waygo.R;
 import com.waygo.WaygoApplication;
 import com.waygo.data.model.conversation.Person;
 import com.waygo.data.model.conversation.User;
+import com.waygo.data.model.conversation.Waygo;
 import com.waygo.utils.Instrumentation;
 import com.waygo.utils.RxBinderUtil;
 import com.waygo.viewmodels.ChatViewModel;
@@ -16,7 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,12 +138,15 @@ public class ChatListFragment extends Fragment {
 
             public final TextView mDateTextView;
 
+            public final ImageView mMapImageView;
+
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mImageView = (ImageView) view.findViewById(R.id.avatar);
                 mTextView = (TextView) view.findViewById(R.id.text);
                 mDateTextView = (TextView) view.findViewById(R.id.date);
+                mMapImageView = (ImageView) view.findViewById(R.id.map);
             }
         }
 
@@ -166,12 +170,20 @@ public class ChatListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mTextView.setText(Html.fromHtml(mPersons.get(position).getSentence()));
+            TextView textView = holder.mTextView;
+            textView.setClickable(true);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            textView.setText(Html.fromHtml(mPersons.get(position).getSentence()));
             holder.mDateTextView.setText(mPersons.get(position).getTime());
             mPersons.get(position)
                     .getUserImage()
                     .iter(id -> holder.mImageView.setImageResource(id));
 
+            if (mPersons.get(position) instanceof Waygo) {
+                ((Waygo) mPersons.get(position)).getImage()
+                                                .iter(__ -> holder.mMapImageView
+                                                        .setVisibility(View.VISIBLE));
+            }
         }
 
         @Override
