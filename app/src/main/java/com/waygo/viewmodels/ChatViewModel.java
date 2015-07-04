@@ -16,6 +16,7 @@ import com.waygo.utils.result.Result;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
@@ -78,6 +79,6 @@ public class ChatViewModel extends AbstractViewModel {
 
     @NonNull
     public Observable<Person> getConversation() {
-        return mConversation;
+        return mConversation.asObservable();
     }
 }
