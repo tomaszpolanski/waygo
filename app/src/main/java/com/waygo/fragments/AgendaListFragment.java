@@ -65,7 +65,7 @@ public class AgendaListFragment extends Fragment {
     private void setupRecyclerView(RecyclerView recyclerView) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(),
-                                                                    Arrays.asList("1", "2")));
+                                                                    Arrays.asList("1", "2", "1", "2", "1", "2")));
     }
 
     @Override
@@ -103,22 +103,32 @@ public class AgendaListFragment extends Fragment {
         private List<String> mValues;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            public String mBoundString;
 
             public final View mView;
-            public final TextView mTextView;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mTextView = (TextView) view.findViewById(R.id.info_text);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mTextView.getText();
             }
         }
+
+//        public static class ViewHolder1 extends ViewHolder {
+//            public String mBoundString;
+//
+//            public final View mView;
+//            public final TextView m;
+//
+//            public ViewHolder1(View view) {
+//                super(view);
+//                mView = view;
+//                mTextView = (TextView) view.findViewById(R.id.info_text);
+//            }
+//
+//            @Override
+//            public String toString() {
+//                return super.toString() + " '" + mTextView.getText();
+//            }
+//        }
 
         public SimpleStringRecyclerViewAdapter(Context context, List<String> items) {
             context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
@@ -129,9 +139,18 @@ public class AgendaListFragment extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                                      .inflate(R.layout.list_item, parent, false);
+                                      .inflate(getLayout(viewType), parent, false);
             view.setBackgroundResource(mBackground);
             return new ViewHolder(view);
+        }
+
+        private int getLayout(int viewType) {
+            switch (viewType) {
+                case 0: return R.layout.flight_item;
+                case 1: return R.layout.map_item;
+                case 2: return R.layout.sun_item;
+                default: return R.layout.list_item;
+            }
         }
 
         @Override
@@ -142,24 +161,24 @@ public class AgendaListFragment extends Fragment {
         }
 
         private void setupViewHolder(ViewHolder holder, int position) {
-            holder.mBoundString = mValues.get(position);
-            holder.mTextView.setText(mValues.get(position));
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Context context = v.getContext();
-//                    Intent intent = new Intent(context, CheeseDetailActivity.class);
-//                    intent.putExtra(CheeseDetailActivity.EXTRA_NAME, holder.mBoundString);
+//            holder.mBoundString = mValues.get(position);
+//            holder.mTextView.setText(mValues.get(position));
 //
-//                    context.startActivity(intent);
-                }
-            });
-
-//            Glide.with(holder.mImageView.getContext())
-//                 .load(Cheeses.getRandomCheeseDrawable())
-//                 .fitCenter()
-//                 .into(holder.mImageView);
+//            holder.mView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    Context context = v.getContext();
+////                    Intent intent = new Intent(context, CheeseDetailActivity.class);
+////                    intent.putExtra(CheeseDetailActivity.EXTRA_NAME, holder.mBoundString);
+////
+////                    context.startActivity(intent);
+//                }
+//            });
+//
+////            Glide.with(holder.mImageView.getContext())
+////                 .load(Cheeses.getRandomCheeseDrawable())
+////                 .fitCenter()
+////                 .into(holder.mImageView);
         }
 
         @Override
@@ -168,7 +187,7 @@ public class AgendaListFragment extends Fragment {
         }
 
         public int getItemViewType (int position) {
-            return 0;
+            return position % 10;
         }
     }
 }
