@@ -177,9 +177,10 @@ public class ChatListFragment extends Fragment {
             holder.mDateTextView.setText(mPersons.get(position).getTime());
             mPersons.get(position)
                     .getUserImage()
-                    .iter(id -> holder.mImageView.setImageResource(id));
+                    .iter(holder.mImageView::setImageResource);
 
             if (mPersons.get(position) instanceof Waygo) {
+                holder.mMapImageView.setVisibility(View.GONE);
                 ((Waygo) mPersons.get(position)).getImage()
                                                 .iter(__ -> holder.mMapImageView
                                                         .setVisibility(View.VISIBLE));
