@@ -168,6 +168,10 @@ public class ChatListFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mTextView.setText(Html.fromHtml(mPersons.get(position).getSentence()));
             holder.mDateTextView.setText(mPersons.get(position).getTime());
+            mPersons.get(position)
+                    .getUserImage()
+                    .iter(id -> holder.mImageView.setImageResource(id));
+
         }
 
         @Override

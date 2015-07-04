@@ -20,7 +20,7 @@ public class Waygo extends Person {
     }
 
     public Waygo(@NonNull final String message) {
-        super(message, Option.NONE);
+        super(message, Option.asOption(R.drawable.small_waygo));
         mImage = Option.NONE;
     }
 
@@ -41,7 +41,7 @@ public class Waygo extends Person {
     private static Option<Integer> getUserImage(@NonNull final ButlerResponse response) {
         return Option.asOption(response)
                 .ofType(ButlerSayResponse.class)
-                .map(__ -> R.drawable.logo)
-                .orOption(() -> Option.asOption(R.drawable.lady));
+                .map(__ -> R.drawable.small_waygo)
+                .orOption(() -> Option.asOption(R.drawable.small_lady));
     }
 }

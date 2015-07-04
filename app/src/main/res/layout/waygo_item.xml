@@ -31,8 +31,7 @@
                        android:paddingRight="8dp"
                        android:paddingLeft="8dp"
                        android:layout_alignParentTop="true"
-                       android:layout_alignParentRight="true"
-                       android:src="@drawable/plane"/>
+                       android:layout_alignParentRight="true"/>
 
             <TextView
                     android:id="@+id/text"
