@@ -4,6 +4,7 @@ import com.waygo.WaygoApplication;
 import com.waygo.activities.MainActivity;
 import com.waygo.data.DataStoreModule;
 import com.waygo.fragments.AgendaListFragment;
+import com.waygo.fragments.ChatListFragment;
 import com.waygo.fragments.RepositoryFragment;
 import com.waygo.network.NetworkService;
 import com.waygo.viewmodels.RepositoryViewModel;
@@ -28,6 +29,7 @@ public interface Graph {
     void inject(NetworkService networkService);
     void inject(WaygoApplication waygoApplication);
     void inject(AgendaListFragment agendaListFragment);
+    void inject(ChatListFragment chatListFragment);
 
     final class Initializer {
 
