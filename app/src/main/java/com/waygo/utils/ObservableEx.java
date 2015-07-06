@@ -1,13 +1,17 @@
 package com.waygo.utils;
 
 
+import android.support.annotation.NonNull;
+
 import com.waygo.utils.option.Option;
 import com.waygo.utils.result.Result;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.functions.Func1;
 
 public final class ObservableEx<T> extends Observable<T> {
@@ -55,6 +59,23 @@ public final class ObservableEx<T> extends Observable<T> {
     public static Observable<String> defineError(final Observable<? extends Result> error) {
         return error.filter(result -> !result.isSuccess())
                     .map(Result::getMessage);
+    }
+
+    public static <T> Observable<T> delayEach(@NonNull final List<T> elements, int seconds, @NonNull final Scheduler scheduler ) {
+        return Observable.create(new OnSubscribe<T>() {
+            @Override
+            public void call(Subscriber<? super T> subscriber) {
+                for (T ele : elements) {
+                    try {
+                        Thread.sleep(seconds * 1000);
+                    } catch (Exception e) {
+
+                    }
+                    subscriber.onNext(ele);
+                }
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(scheduler);
     }
 
 
