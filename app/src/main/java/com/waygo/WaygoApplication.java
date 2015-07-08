@@ -2,6 +2,7 @@ package com.waygo;
 
 import com.waygo.injections.Graph;
 import com.waygo.utils.Instrumentation;
+import com.waygo.utilskt.option.Option;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
@@ -25,6 +26,9 @@ public class WaygoApplication extends Application {
         getGraph().inject(this);
 
         instrumentation.init();
+
+        String test = null;
+        Option<String> op = Option.Companion.ofObj(test);
     }
 
     @NonNull
