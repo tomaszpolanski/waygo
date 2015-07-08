@@ -2,36 +2,53 @@ package com.waygo.utilskt.option
 
 abstract class Option<T> {
 
-    abstract public val value : T;
+    abstract public val unsafe : T;
     abstract public val isSome : Boolean
 
     companion object {
-        public  fun ofObj<T>(obj : T?) : Option<T> {
-            return if (obj != null) Some(obj) else None<T>()
+        public fun ofObj<T>(obj : T?) : Option<T>  = if (obj != null) Some(obj) else None<T>()
+        public fun tryAsOption<T>(f : () -> T ) : Option<T>  {
+            try {
+                return ofObj(f())
+            } catch ( e : Exception) {
+                return None();
+            }
         }
     }
+
+    abstract public fun <OUT> map( selector:  (T) -> OUT ) : Option<OUT>
+    abstract public fun <OUT> flatMap( selector:  (T) -> Option<OUT> ) : Option<OUT>
+    abstract public fun filter( predicate:  (T) -> Boolean ) : Option<T>
+    abstract public fun orOption( selector:  () -> Option<T> ) : Option<T>
+    abstract public fun orDefault( selector:  () -> T ) : T
+    abstract public fun toList() : List<T>
 }
 
-class Some<T> internal constructor( val vall : T) : Option<T>() {
-    override val isSome: Boolean
-        get() = true
+class Some<T> internal constructor( val value : T) : Option<T>() {
 
-    override val value: T
-        get() = vall
+    override val isSome: Boolean = true
+
+    override val unsafe: T = value
+
+    override fun <OUT> map( selector:  (T) -> OUT ) : Option<OUT> = Some(selector(value))
+    override fun <OUT> flatMap(selector: (T) -> Option<OUT>): Option<OUT> = selector(value)
+    override fun filter(predicate: (T) -> Boolean): Option<T> = if (predicate(value)) this else None();
+    override fun orOption(selector: () -> Option<T>): Option<T> = this
+    override fun orDefault(selector: () -> T): T = value
+    override fun toList(): List<T> = listOf(value)
 }
 
 class None<T> internal constructor() : Option<T>() {
-    override val isSome: Boolean
-        get() = false
 
-    override val value: T
+    override val isSome: Boolean = false
+
+    override val unsafe: T
         get() = throw UnsupportedOperationException()
 
+    override fun <OUT> map(selector: (T) -> OUT): Option<OUT> = None()
+    override fun <OUT> flatMap(selector: (T) -> Option<OUT>): Option<OUT> = None()
+    override fun filter(predicate: (T) -> Boolean): Option<T> = this
+    override fun orOption(selector: () -> Option<T>): Option<T> = selector()
+    override fun orDefault(selector: () -> T): T = selector()
+    override fun toList(): List<T> = emptyList()
 }
-
-
-fun <IN, OUT> Option<IN>.map( selector:  (IN) -> OUT ) : Option<OUT> =
-        when(this) {
-            is Some -> Some(selector(this.value))
-            else -> None()
-        }
