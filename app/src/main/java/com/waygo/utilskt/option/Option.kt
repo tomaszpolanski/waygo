@@ -1,13 +1,15 @@
 package com.waygo.utilskt.option
 
+import kotlin.platform.platformStatic
+
 abstract class Option<T> {
 
     abstract public val unsafe : T;
     abstract public val isSome : Boolean
 
     companion object {
-        public fun ofObj<T>(obj : T?) : Option<T>  = if (obj != null) Some(obj) else None<T>()
-        public fun tryAsOption<T>(f : () -> T ) : Option<T>  {
+        public platformStatic fun ofObj<T>(obj : T?) : Option<T>  = if (obj != null) Some(obj) else None<T>()
+        public platformStatic fun tryAsOption<T>(f : () -> T ) : Option<T>  {
             try {
                 return ofObj(f())
             } catch ( e : Exception) {
