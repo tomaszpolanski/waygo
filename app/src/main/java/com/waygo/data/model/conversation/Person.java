@@ -5,20 +5,21 @@ import android.text.format.DateFormat;
 
 import com.waygo.data.model.BaseModel;
 import com.waygo.utils.option.OptionJ;
+import com.waygo.utilskt.Option;
 
 public abstract class Person extends BaseModel {
     @NonNull
     private final String mSentence;
 
     @NonNull
-    private final OptionJ<Integer> mUserImage;
+    private final Option<Integer> mUserImage;
 
     @NonNull
     private final String mTime;
 
 
     protected Person(@NonNull final String sentence,
-                     @NonNull final OptionJ<Integer> userImage) {
+                     @NonNull final Option<Integer> userImage) {
         mSentence = sentence;
         mUserImage = userImage;
 
@@ -31,7 +32,7 @@ public abstract class Person extends BaseModel {
     }
 
     @NonNull
-    public OptionJ<Integer> getUserImage() {
+    public Option<Integer> getUserImage() {
         return mUserImage;
     }
 

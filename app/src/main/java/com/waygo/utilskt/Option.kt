@@ -27,9 +27,11 @@ abstract class Option<T> {
     abstract public fun toResult(fail: String) : Result<T>
     abstract public fun toList() : List<T>
     abstract public fun <OUT> match( some:  (T) -> OUT, none: () -> OUT) : OUT
+    abstract public fun iter(some: (T) -> Unit) : Unit
 }
 
 class Some<T> internal constructor( val value : T) : Option<T>() {
+
 
     override val isSome: Boolean = true
 
@@ -44,10 +46,11 @@ class Some<T> internal constructor( val value : T) : Option<T>() {
     override fun toResult(fail: String): Result<T>  = Success(value)
     override fun toList(): List<T> = listOf(value)
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = some(value)
-
+    override fun iter(some: (T) -> Unit) = some(value)
 }
 
 class None<T> internal constructor() : Option<T>() {
+
 
     override val isSome: Boolean = false
 
@@ -63,4 +66,5 @@ class None<T> internal constructor() : Option<T>() {
     override fun toResult(fail: String): Result<T>  = Failure(fail)
     override fun toList(): List<T> = emptyList()
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = none()
+    override fun iter(some: (T) -> Unit) = Unit
 }

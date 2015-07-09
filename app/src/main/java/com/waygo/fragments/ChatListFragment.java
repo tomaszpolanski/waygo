@@ -10,6 +10,7 @@ import com.waygo.utils.RxBinderUtil;
 import com.waygo.viewmodels.ChatViewModel;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -29,6 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import jet.runtime.typeinfo.JetValueParameter;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class ChatListFragment extends Fragment {
 
@@ -177,13 +182,24 @@ public class ChatListFragment extends Fragment {
             holder.mDateTextView.setText(mPersons.get(position).getTime());
             mPersons.get(position)
                     .getUserImage()
-                    .iter(holder.mImageView::setImageResource);
+                    .iter(new Function1<Integer, Unit>() {
+                        @Override
+                        public Unit invoke(@JetValueParameter(name = "p1") Integer i) {
+                            holder.mImageView.setImageResource(i);
+                            return Unit.INSTANCE$;
+                        }
+                    });
 
             if (mPersons.get(position) instanceof Waygo) {
                 holder.mMapImageView.setVisibility(View.GONE);
                 ((Waygo) mPersons.get(position)).getImage()
-                                                .iter(__ -> holder.mMapImageView
-                                                        .setVisibility(View.VISIBLE));
+                                                .iter(new Function1<Bitmap, Unit>() {
+                                                    @Override
+                                                    public Unit invoke(@JetValueParameter(name = "p1") Bitmap __) {
+                                                        holder.mMapImageView.setVisibility(View.VISIBLE);
+                                                        return Unit.INSTANCE$;
+                                                    }
+                                                });
             }
         }
 
