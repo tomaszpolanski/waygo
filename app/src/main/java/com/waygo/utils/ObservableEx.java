@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.waygo.utils.option.OptionJ;
 import com.waygo.utils.result.ResultJ;
+import com.waygo.utilskt.Option;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +55,22 @@ public final class ObservableEx<T> extends Observable<T> {
         return o.map(selector)
                 .filter(option -> option != OptionJ.NONE_J)
                 .map(OptionJ::getUnsafe);
+    }
+
+    public static <T, R> Observable<R> chooseKt(final Observable<T> o, final Func1<T, Option<R>> selector) {
+        return o.map(selector)
+                .filter(new Func1<Option<R>, Boolean>() {
+                    @Override
+                    public Boolean call(Option<R> option) {
+                        return option.getIsSome();
+                    }
+                })
+                .map(new Func1<Option<R>, R>() {
+                    @Override
+                    public R call(Option<R> oo) {
+                        return oo.getUnsafe();
+                    }
+                });
     }
 
     public static Observable<String> defineError(final Observable<? extends ResultJ> error) {

@@ -80,15 +80,8 @@ public class RepositoryViewModel extends AbstractViewModel {
                           .subscribe(mFlightSubject::onNext,
                                      throwable -> Log.e(TAG, "Flight error: ",
                                                         throwable)));
-        final Observable<ResultJ<ButlerResponse>> butlerResponse =
-                mQuestion.switchMap(mButtler::ask)
-                .share();
 
-        final Observable<String> validResponse = ObservableEx.choose(butlerResponse, ResultJ::asOption)
-                .map(ButlerResponse::getMessage);
 
-        subscriptions.add(validResponse.subscribe(mQuestionResponse));
-        subscriptions.add(ObservableEx.defineError(butlerResponse).subscribe(mQuestionResponse));
     }
 
     @NonNull

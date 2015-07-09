@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.waygo.utils.result.ResultJ;
+import com.waygo.utilskt.Result;
 
 public class ButlerShowResponse extends ButlerResponse {
 
@@ -17,10 +18,10 @@ public class ButlerShowResponse extends ButlerResponse {
     }
 
     @NonNull
-    public static ResultJ<ButlerResponse> create(@NonNull final String message,
+    public static Result<ButlerResponse> create(@NonNull final String message,
                                                  @NonNull final Bitmap image) {
         return createMessage(message)
-                .map(m -> new ButlerShowResponse(message, image));
+                .map(m -> (ButlerResponse)new ButlerShowResponse(message, image));
     }
 
     @NonNull
