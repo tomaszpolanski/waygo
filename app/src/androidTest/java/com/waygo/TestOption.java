@@ -2,7 +2,8 @@ package com.waygo;
 
 
 import com.waygo.utils.SimpleTestCase;
-import com.waygo.utilskt.option.Option;
+import com.waygo.utilskt.Option;
+import com.waygo.utilskt.Result;
 
 import java.io.Serializable;
 import java.util.List;
@@ -198,4 +199,26 @@ public class TestOption extends SimpleTestCase {
 
         assertFalse(op.getIsSome());
     }
+
+    public void testToResultSome() throws Exception {
+
+        final String str = "Something";
+        Result<String> re = Option.ofObj(str)
+                .toResult("");
+
+        assertTrue(re.getIsSuccess());
+        assertEquals(str, re.getUnsafe());
+    }
+
+    public void testToResultNone() throws Exception {
+
+        final String error = "error";
+        Result<String> re = Option.ofObj((String)null)
+                .toResult(error);
+
+        assertFalse(re.getIsSuccess());
+        assertEquals(error, re.getMessage());
+    }
+
+
 }

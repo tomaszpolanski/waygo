@@ -24,6 +24,7 @@ abstract class Option<T> {
     abstract public fun filter( predicate:  (T) -> Boolean ) : Option<T>
     abstract public fun orOption( selector:  () -> Option<T> ) : Option<T>
     abstract public fun orDefault( selector:  () -> T ) : T
+    abstract public fun toResult(fail: String) : Result<T>
     abstract public fun toList() : List<T>
     abstract public fun <OUT> match( some:  (T) -> OUT, none: () -> OUT) : OUT
 }
@@ -40,6 +41,7 @@ class Some<T> internal constructor( val value : T) : Option<T>() {
     override fun filter(predicate: (T) -> Boolean): Option<T> = if (predicate(value)) this else None();
     override fun orOption(selector: () -> Option<T>): Option<T> = this
     override fun orDefault(selector: () -> T): T = value
+    override fun toResult(fail: String): Result<T>  = Success(value)
     override fun toList(): List<T> = listOf(value)
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = some(value)
 
@@ -58,6 +60,7 @@ class None<T> internal constructor() : Option<T>() {
     override fun filter(predicate: (T) -> Boolean): Option<T> = this
     override fun orOption(selector: () -> Option<T>): Option<T> = selector()
     override fun orDefault(selector: () -> T): T = selector()
+    override fun toResult(fail: String): Result<T>  = Failure(fail)
     override fun toList(): List<T> = emptyList()
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = none()
 }

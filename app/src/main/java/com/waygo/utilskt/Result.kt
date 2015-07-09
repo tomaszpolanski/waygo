@@ -8,7 +8,8 @@ abstract class Result<T> {
     abstract public val message : String
 
     companion object {
-        public platformStatic fun ofObj<T>(obj : T?, failMessage : String = "Object is null") : Result<T>  =
+        public platformStatic fun ofObj<T>(obj : T?) : Result<T>  = ofObj(obj, "Object is null" )
+        public platformStatic fun ofObj<T>(obj : T?, failMessage : String) : Result<T>  =
                 if (obj != null) Success(obj) else Failure<T>(failMessage)
         public platformStatic fun tryAsOption<T>(f : () -> T ) : Result<T>  {
             try {
@@ -25,12 +26,14 @@ abstract class Result<T> {
     abstract public fun filter( predicate:  (T) -> Boolean, fail : String ) : Result<T>
     abstract public fun orResult( selector:  () -> Result<T> ) : Result<T>
     abstract public fun orDefault( selector:  () -> T ) : T
+    abstract public fun toOption() : Option<T>
     abstract public fun <OUT> match( success:  (T) -> OUT, failure: (String) -> OUT) : OUT
 }
 
 class Success<T> internal constructor( val value : T) : Result<T>() {
 
-    override val message: String = throw UnsupportedOperationException()
+    override val message: String
+        get() = throw UnsupportedOperationException()
     override val isSuccess: Boolean = true
     override val unsafe: T = value
 
@@ -42,12 +45,14 @@ class Success<T> internal constructor( val value : T) : Result<T>() {
             if (predicate(value)) this else Failure(fail);
     override fun orResult(selector: () -> Result<T>): Result<T>  = this
     override fun orDefault(selector: () -> T): T = value
+    override fun toOption(): Option<T> = Some(value)
     override fun <OUT> match(success: (T) -> OUT, failure: (String) -> OUT): OUT = success(value)
 }
 
 class Failure<T> internal constructor( override val message : String) : Result<T>() {
 
-    override val unsafe: T  = throw UnsupportedOperationException()
+    override val unsafe: T
+            get() = throw UnsupportedOperationException()
     override val isSuccess: Boolean = false
 
     override fun <OUT> map(selector: (T) -> OUT): Result<OUT>  = Failure(message)
@@ -56,6 +61,7 @@ class Failure<T> internal constructor( override val message : String) : Result<T
     override fun filter(predicate: (T) -> Boolean, fail: String): Result<T>  = this
     override fun orResult(selector: () -> Result<T>): Result<T>  = selector()
     override fun orDefault(selector: () -> T): T  = selector()
+    override fun toOption(): Option<T> = None()
     override fun <OUT> match(success: (T) -> OUT, failure: (String) -> OUT): OUT = failure(message)
 
 }
