@@ -1,4 +1,4 @@
-package com.waygo.utilskt.option
+package com.waygo.utilskt
 
 import kotlin.platform.platformStatic
 
