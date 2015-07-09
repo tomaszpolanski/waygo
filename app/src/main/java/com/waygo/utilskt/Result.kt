@@ -23,7 +23,7 @@ abstract class Result<T> {
     abstract public fun <OUT> map( selector:  (T) -> OUT ) : Result<OUT>
     abstract public fun <OUT> flatMap( selector:  (T) -> Result<OUT> ) : Result<OUT>
     abstract public fun <OUT> ofType( type:  Class<OUT> ) : Result<OUT>
-    abstract public fun filter( predicate:  (T) -> Boolean, fail : String ) : Result<T>
+    abstract public fun filter( predicate:  (T) -> Boolean, fail : (T) -> String ) : Result<T>
     abstract public fun orResult( selector:  () -> Result<T> ) : Result<T>
     abstract public fun orDefault( selector:  () -> T ) : T
     abstract public fun toOption() : Option<T>
@@ -41,8 +41,8 @@ class Success<T> internal constructor( val value : T) : Result<T>() {
     override fun <OUT> flatMap(selector: (T) -> Result<OUT>): Result<OUT>  = selector(value)
     override fun <OUT> ofType(type: Class<OUT>): Result<OUT> =
             if (type.isInstance(value)) Success(value as OUT) else Failure("Cannot cast to: " + type.toString())
-    override fun filter(predicate: (T) -> Boolean, fail: String): Result<T> =
-            if (predicate(value)) this else Failure(fail);
+    override fun filter(predicate: (T) -> Boolean, fail: (T) -> String): Result<T> =
+            if (predicate(value)) this else Failure(fail(value));
     override fun orResult(selector: () -> Result<T>): Result<T>  = this
     override fun orDefault(selector: () -> T): T = value
     override fun toOption(): Option<T> = Some(value)
@@ -58,7 +58,7 @@ class Failure<T> internal constructor( override val message : String) : Result<T
     override fun <OUT> map(selector: (T) -> OUT): Result<OUT>  = Failure(message)
     override fun <OUT> flatMap(selector: (T) -> Result<OUT>): Result<OUT> = Failure(message)
     override fun <OUT> ofType(type: Class<OUT>): Result<OUT>  = Failure(message)
-    override fun filter(predicate: (T) -> Boolean, fail: String): Result<T>  = this
+    override fun filter(predicate: (T) -> Boolean, fail: (T) -> String): Result<T>  = this
     override fun orResult(selector: () -> Result<T>): Result<T>  = selector()
     override fun orDefault(selector: () -> T): T  = selector()
     override fun toOption(): Option<T> = None()

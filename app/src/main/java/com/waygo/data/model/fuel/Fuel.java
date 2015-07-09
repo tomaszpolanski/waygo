@@ -21,6 +21,6 @@ public abstract class Fuel extends BaseModel {
     @NonNull
     protected static Result<Float> createValue(final float value) {
         return Result.ofObj(value)
-                .filter(v -> v >= 0 && v <= 1,  "Fuel value is invalid: " );
+                .filter(v -> v >= 0 && v <= 1, v -> "Fuel value is invalid: " + v );
     }
 }

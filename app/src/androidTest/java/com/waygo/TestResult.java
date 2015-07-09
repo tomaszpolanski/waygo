@@ -50,7 +50,7 @@ public class TestResult extends SimpleTestCase {
 
         final String str = "Something";
         Result<String> re = Result.ofObj(str)
-                .filter(val -> val.equals(str), "");
+                .filter(val -> val.equals(str), val -> "");
 
         assertTrue(re.getIsSuccess());
         assertEquals(str, re.getUnsafe());
@@ -61,7 +61,7 @@ public class TestResult extends SimpleTestCase {
         final String str = "Something";
         final String error = "error";
         Result<String> re = Result.ofObj(str)
-                .filter(val -> val.equals(""), error);
+                .filter(val -> val.equals(""), val ->  error);
 
         assertFalse(re.getIsSuccess());
         assertEquals(error, re.getMessage());
@@ -70,7 +70,7 @@ public class TestResult extends SimpleTestCase {
     public void testFilterFailure() throws Exception {
 
         Result<String> re = Result.ofObj((String) null)
-                .filter(val -> val.equals(""), "Error");
+                .filter(val -> val.equals(""), val -> "Error");
 
         assertFalse(re.getIsSuccess());
     }
