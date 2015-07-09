@@ -4,6 +4,7 @@ package com.waygo;
 import com.waygo.utils.SimpleTestCase;
 import com.waygo.utilskt.option.Option;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class TestOption extends SimpleTestCase {
@@ -30,7 +31,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         Option<String> op = Option.ofObj("")
-                                  .map(__ -> str);
+                .map(__ -> str);
 
         assertTrue(op.getIsSome());
         assertEquals(str, op.getUnsafe());
@@ -39,7 +40,7 @@ public class TestOption extends SimpleTestCase {
     public void testMapNone() throws Exception {
 
         Option<String> op = Option.ofObj((String) null)
-                                  .map(__ -> "");
+                .map(__ -> "");
 
         assertFalse(op.getIsSome());
     }
@@ -49,7 +50,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         Option<String> op = Option.ofObj(str)
-                                  .filter(val -> val.equals(str));
+                .filter(val -> val.equals(str));
 
         assertTrue(op.getIsSome());
         assertEquals(str, op.getUnsafe());
@@ -59,7 +60,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         Option<String> op = Option.ofObj(str)
-                                  .filter(val -> val.equals(""));
+                .filter(val -> val.equals(""));
 
         assertFalse(op.getIsSome());
     }
@@ -67,7 +68,7 @@ public class TestOption extends SimpleTestCase {
     public void testFilterNone() throws Exception {
 
         Option<String> op = Option.ofObj((String) null)
-                                  .filter(val -> val.equals(""));
+                .filter(val -> val.equals(""));
 
         assertFalse(op.getIsSome());
     }
@@ -76,7 +77,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         Option<String> op = Option.ofObj("")
-                                  .flatMap(val -> Option.ofObj(str));
+                .flatMap(val -> Option.ofObj(str));
 
         assertTrue(op.getIsSome());
         assertEquals(str, op.getUnsafe());
@@ -86,7 +87,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         Option<String> op = Option.ofObj(str)
-                                  .flatMap(val -> Option.ofObj((String) null));
+                .flatMap(val -> Option.ofObj((String) null));
 
         assertFalse(op.getIsSome());
     }
@@ -94,7 +95,7 @@ public class TestOption extends SimpleTestCase {
     public void testFlatMapNone() throws Exception {
 
         Option<String> op = Option.ofObj((String) null)
-                                  .flatMap(val -> Option.ofObj(""));
+                .flatMap(val -> Option.ofObj(""));
 
         assertFalse(op.getIsSome());
     }
@@ -103,7 +104,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         Option<String> op = Option.ofObj(str)
-                                  .orOption(() -> Option.ofObj(""));
+                .orOption(() -> Option.ofObj(""));
 
         assertTrue(op.getIsSome());
         assertEquals(str, op.getUnsafe());
@@ -113,7 +114,7 @@ public class TestOption extends SimpleTestCase {
     public void testOrOptionNone() throws Exception {
         final String str = "Something";
         Option<String> op = Option.ofObj((String) null)
-                                  .orOption(() -> Option.ofObj(str));
+                .orOption(() -> Option.ofObj(str));
 
         assertTrue(op.getIsSome());
         assertEquals(str, op.getUnsafe());
@@ -123,7 +124,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         String s = Option.ofObj(str)
-                         .orDefault(() -> "");
+                .orDefault(() -> "");
 
         assertEquals(str, s);
     }
@@ -132,7 +133,7 @@ public class TestOption extends SimpleTestCase {
     public void testOrDefaultNone() throws Exception {
         final String str = "Something";
         String s = Option.ofObj((String) null)
-                         .orDefault(() -> str);
+                .orDefault(() -> str);
 
         assertEquals(str, s);
     }
@@ -141,7 +142,7 @@ public class TestOption extends SimpleTestCase {
 
         final String str = "Something";
         List<String> list = Option.ofObj(str)
-                                  .toList();
+                .toList();
 
         assertEquals(1, list.size());
         assertEquals(str, list.get(0));
@@ -150,7 +151,7 @@ public class TestOption extends SimpleTestCase {
 
     public void testToListNone() throws Exception {
         List<String> list = Option.ofObj((String) null)
-                                  .toList();
+                .toList();
 
         assertEquals(0, list.size());
     }
@@ -168,6 +169,32 @@ public class TestOption extends SimpleTestCase {
     public void testTryAsOptionNone() throws Exception {
         final Integer str = null;
         Option<String> op = Option.tryAsOption(() -> str.toString());
+
+        assertFalse(op.getIsSome());
+    }
+
+    public void testOfTypeSome() throws Exception {
+
+        final String str = "Something";
+        Option<String> op = Option.ofObj((Serializable)str)
+                                  .ofType(String.class);
+
+        assertTrue(op.getIsSome());
+        assertEquals(str, op.getUnsafe());
+    }
+
+    public void testOfTypeSomeFailed() throws Exception {
+
+        Option<String> op = Option.ofObj(1)
+                .ofType(String.class);
+
+        assertFalse(op.getIsSome());
+    }
+
+    public void testOfTypeNone() throws Exception {
+
+        Option<String> op = Option.ofObj((String) null)
+                .ofType(String.class);
 
         assertFalse(op.getIsSome());
     }
