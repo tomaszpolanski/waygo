@@ -8,13 +8,11 @@ import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.pojo.flightstatus.Flight;
 import com.waygo.utils.ObservableEx;
-import com.waygo.utils.option.Option;
-import com.waygo.utils.result.Result;
+import com.waygo.utils.option.OptionJ;
+import com.waygo.utils.result.ResultJ;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
-import java.security.PublicKey;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +41,7 @@ public class RepositoryViewModel extends AbstractViewModel {
 
     private final PublishSubject<String> mQuestionResponse = PublishSubject.create();
 
-    private final Observable<Fuel> mFuel;
+
     @NonNull
     private final IButler mButtler;
 
@@ -62,8 +60,7 @@ public class RepositoryViewModel extends AbstractViewModel {
 
         this.mGetFlightStatus = getFlightStatus;
         mFetchAndGetFlight = fetchAndGetFlight;
-        mFuel = ObservableEx.choose(logBoxProvider.getTankLevel()
-                                                  .map(Result::asOption), Option::id);
+
         mCalendar = Calendar.getInstance();
         mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     }
@@ -83,11 +80,11 @@ public class RepositoryViewModel extends AbstractViewModel {
                           .subscribe(mFlightSubject::onNext,
                                      throwable -> Log.e(TAG, "Flight error: ",
                                                         throwable)));
-        final Observable<Result<ButlerResponse>> butlerResponse =
+        final Observable<ResultJ<ButlerResponse>> butlerResponse =
                 mQuestion.switchMap(mButtler::ask)
                 .share();
 
-        final Observable<String> validResponse = ObservableEx.choose(butlerResponse, Result::asOption)
+        final Observable<String> validResponse = ObservableEx.choose(butlerResponse, ResultJ::asOption)
                 .map(ButlerResponse::getMessage);
 
         subscriptions.add(validResponse.subscribe(mQuestionResponse));
@@ -104,10 +101,7 @@ public class RepositoryViewModel extends AbstractViewModel {
         return mFlightSubject.asObservable();
     }
 
-    @NonNull
-    public Observable<Fuel> getFuel() {
-        return mFuel;
-    }
+
 
     @NonNull
     public Observable<String> getResponse() {

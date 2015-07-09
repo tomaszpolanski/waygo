@@ -3,7 +3,7 @@ package com.waygo.data.model.butler;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 public class ButlerShowResponse extends ButlerResponse {
 
@@ -17,7 +17,7 @@ public class ButlerShowResponse extends ButlerResponse {
     }
 
     @NonNull
-    public static Result<ButlerResponse> create(@NonNull final String message,
+    public static ResultJ<ButlerResponse> create(@NonNull final String message,
                                                  @NonNull final Bitmap image) {
         return createMessage(message)
                 .map(m -> new ButlerShowResponse(message, image));

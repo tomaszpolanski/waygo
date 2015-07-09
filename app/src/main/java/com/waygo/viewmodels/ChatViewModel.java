@@ -1,7 +1,6 @@
 package com.waygo.viewmodels;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.waygo.data.model.conversation.Person;
 import com.waygo.data.model.conversation.User;
@@ -11,7 +10,7 @@ import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.Linq;
 import com.waygo.utils.ObservableEx;
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
@@ -53,7 +52,7 @@ public class ChatViewModel extends AbstractViewModel {
                 .ofType(Person.class)
                 .share();
 
-        final Observable<Person> answers = questions.switchMap(s -> ObservableEx.choose(mButler.ask(s.getSentence()), Result::asOption))
+        final Observable<Person> answers = questions.switchMap(s -> ObservableEx.choose(mButler.ask(s.getSentence()), ResultJ::asOption))
                  .map(response -> new Waygo(response))
                  .ofType(Person.class);
 

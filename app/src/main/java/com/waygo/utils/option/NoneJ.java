@@ -1,11 +1,10 @@
 package com.waygo.utils.option;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.android.internal.util.Predicate;
 import com.waygo.utils.Linq;
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 
 import rx.functions.Action1;
@@ -15,9 +14,9 @@ import rx.functions.Func2;
 import rx.functions.Func3;
 import rx.functions.Func4;
 
-public final class None<T> extends Option<T> {
+public final class NoneJ<T> extends OptionJ<T> {
 
-    None() { }
+    NoneJ() { }
 
     @Override
     public void iter(@NonNull final Action1<T> action) {
@@ -26,25 +25,25 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public <OUT> Option<OUT> map(@NonNull final Func1<T, OUT> f) {
-        return NONE;
+    public <OUT> OptionJ<OUT> map(@NonNull final Func1<T, OUT> f) {
+        return NONE_J;
     }
 
     @NonNull
     @Override
-    public <OUT> Option<OUT> flatMap(@NonNull final Func1<T, Option<OUT>> f) {
-        return NONE;
+    public <OUT> OptionJ<OUT> flatMap(@NonNull final Func1<T, OptionJ<OUT>> f) {
+        return NONE_J;
     }
 
     @NonNull
     @Override
-    public Option<T> filter(@NonNull final Predicate<? super T> predicate) {
-        return NONE;
+    public OptionJ<T> filter(@NonNull final Predicate<? super T> predicate) {
+        return NONE_J;
     }
 
     @NonNull
     @Override
-    public Option<T> orOption(@NonNull final Func0<Option<T>> f) {
+    public OptionJ<T> orOption(@NonNull final Func0<OptionJ<T>> f) {
         return f.call();
     }
 
@@ -62,8 +61,8 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public <OUT> Option<OUT> ofType(@NonNull Class<OUT> type) {
-        return NONE;
+    public <OUT> OptionJ<OUT> ofType(@NonNull Class<OUT> type) {
+        return NONE_J;
     }
 
     @NonNull
@@ -75,32 +74,32 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public <IN, OUT> Option<OUT> lift(@NonNull final Option<IN> optionB,
+    public <IN, OUT> OptionJ<OUT> lift(@NonNull final OptionJ<IN> optionJB,
                                       @NonNull final Func2<T, IN, OUT> f) {
-        return NONE;
+        return NONE_J;
     }
 
     @NonNull
     @Override
-    public <IN1, IN2, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
-                                            @NonNull Option<IN2> option2,
+    public <IN1, IN2, OUT> OptionJ<OUT> lift(@NonNull OptionJ<IN1> optionJ1,
+                                            @NonNull OptionJ<IN2> optionJ2,
                                             @NonNull Func3<T, IN1, IN2, OUT> f) {
-        return NONE;
+        return NONE_J;
     }
 
     @NonNull
     @Override
-    public <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
-                                                 @NonNull Option<IN2> option2,
-                                                 @NonNull Option<IN3> option3,
+    public <IN1, IN2, IN3, OUT> OptionJ<OUT> lift(@NonNull OptionJ<IN1> optionJ1,
+                                                 @NonNull OptionJ<IN2> optionJ2,
+                                                 @NonNull OptionJ<IN3> optionJ3,
                                                  @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
-        return NONE;
+        return NONE_J;
     }
 
     @NonNull
     @Override
-    public Result<T> toResult(@NonNull final String message) {
-        return Result.failure(message);
+    public ResultJ<T> toResult(@NonNull final String message) {
+        return ResultJ.failure(message);
     }
 
     @NonNull

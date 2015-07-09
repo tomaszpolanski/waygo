@@ -3,7 +3,7 @@ package com.waygo.data.model.butler;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 public final class ButlerSayResponse extends ButlerResponse {
 
@@ -12,7 +12,7 @@ public final class ButlerSayResponse extends ButlerResponse {
     }
 
     @NonNull
-    public static Result<ButlerResponse> create(@NonNull final String message) {
+    public static ResultJ<ButlerResponse> create(@NonNull final String message) {
         return createMessage(message)
                 .map(s -> new ButlerSayResponse(s));
     }

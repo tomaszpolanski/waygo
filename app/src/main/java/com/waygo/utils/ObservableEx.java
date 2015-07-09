@@ -3,8 +3,8 @@ package com.waygo.utils;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.option.Option;
-import com.waygo.utils.result.Result;
+import com.waygo.utils.option.OptionJ;
+import com.waygo.utils.result.ResultJ;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,25 +40,25 @@ public final class ObservableEx<T> extends Observable<T> {
                          .map(__ -> value);
     }
 
-    public static <T> Observable<T> filterOption(Observable<Option<T>> o) {
-        return o.filter(option -> option != Option.NONE)
-                .map(Option::getUnsafe);
+    public static <T> Observable<T> filterOption(Observable<OptionJ<T>> o) {
+        return o.filter(option -> option != OptionJ.NONE_J)
+                .map(OptionJ::getUnsafe);
     }
 
-    public static <T> Observable<T> filterResult(Observable<Result<T>> r) {
-        return r.filter(Result::isSuccess)
-                .map(Result::getUnsafe);
+    public static <T> Observable<T> filterResult(Observable<ResultJ<T>> r) {
+        return r.filter(ResultJ::isSuccess)
+                .map(ResultJ::getUnsafe);
     }
 
-    public static <T, R> Observable<R> choose(final Observable<T> o, final Func1<T, Option<R>> selector) {
+    public static <T, R> Observable<R> choose(final Observable<T> o, final Func1<T, OptionJ<R>> selector) {
         return o.map(selector)
-                .filter(option -> option != Option.NONE)
-                .map(Option::getUnsafe);
+                .filter(option -> option != OptionJ.NONE_J)
+                .map(OptionJ::getUnsafe);
     }
 
-    public static Observable<String> defineError(final Observable<? extends Result> error) {
+    public static Observable<String> defineError(final Observable<? extends ResultJ> error) {
         return error.filter(result -> !result.isSuccess())
-                    .map(Result::getMessage);
+                    .map(ResultJ::getMessage);
     }
 
     public static <T> Observable<T> delayEach(@NonNull final List<T> elements, int seconds, @NonNull final Scheduler scheduler ) {

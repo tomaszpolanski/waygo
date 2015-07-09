@@ -3,7 +3,8 @@ package com.waygo.data.model.fuel;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.result.Result;
+import com.waygo.utilskt.Result;
+
 
 public final class Electric extends Fuel {
     protected Electric(float value) {
@@ -12,6 +13,6 @@ public final class Electric extends Fuel {
 
     @NonNull
     public static Result<Fuel> create(final float value) {
-        return createValue(value).map(v -> new Electric(v));
+        return createValue(value).map(v -> (Fuel) new Electric(v));
     }
 }

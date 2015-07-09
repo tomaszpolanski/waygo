@@ -1,7 +1,7 @@
 package com.waygo.utils;
 
 
-import com.waygo.utils.option.Option;
+import com.waygo.utils.option.OptionJ;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -255,26 +255,26 @@ public class Linq<T> extends ArrayList<T> {
         return reduce(this, accumulator);
     }
 
-    public static <T> Option<T> last(final Iterable<T> source, final Func1<T, Boolean> predicate) {
-        Option<T> option = Option.NONE;
+    public static <T> OptionJ<T> last(final Iterable<T> source, final Func1<T, Boolean> predicate) {
+        OptionJ<T> optionJ = OptionJ.NONE_J;
         for (T value : source) {
             if (predicate.call(value)) {
-                option = Option.asOption(value);
+                optionJ = OptionJ.asOption(value);
             }
         }
-        return option;
+        return optionJ;
     }
 
-    public Option<T> last(final Func1<T, Boolean> predicate) {
+    public OptionJ<T> last(final Func1<T, Boolean> predicate) {
         return last(this, predicate);
     }
 
 
-    public static <T> Option<T> last(final Iterable<T> source) {
+    public static <T> OptionJ<T> last(final Iterable<T> source) {
         return last(source, val -> true);
     }
 
-    public Option<T> last() {
+    public OptionJ<T> last() {
         return last(this);
     }
 
@@ -288,13 +288,13 @@ public class Linq<T> extends ArrayList<T> {
      * @return Single Option value
      */
     @SuppressWarnings("unchecked")
-    public static <T> Option<T> first(final Iterable<T> source, final Func1<T, Boolean> predicate) {
+    public static <T> OptionJ<T> first(final Iterable<T> source, final Func1<T, Boolean> predicate) {
         for (T value : source) {
             if (predicate.call(value)) {
-                return Option.asOption(value);
+                return OptionJ.asOption(value);
             }
         }
-        return Option.NONE;
+        return OptionJ.NONE_J;
     }
 
     /**
@@ -303,7 +303,7 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Single Option value
      */
-    public Option<T> first(final Func1<T, Boolean> predicate) {
+    public OptionJ<T> first(final Func1<T, Boolean> predicate) {
         return first(this, predicate);
     }
 
@@ -312,7 +312,7 @@ public class Linq<T> extends ArrayList<T> {
      *
      * @return Single Option value
      */
-    public static <T> Option<T> first(final Iterable<T> source) {
+    public static <T> OptionJ<T> first(final Iterable<T> source) {
         return first(source, val -> true);
     }
 
@@ -321,7 +321,7 @@ public class Linq<T> extends ArrayList<T> {
      *
      * @return Single Option value
      */
-    public Option<T> first() {
+    public OptionJ<T> first() {
         return first(this);
     }
 
@@ -350,11 +350,11 @@ public class Linq<T> extends ArrayList<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public Option<T> getOption(int index) {
+    public OptionJ<T> getOption(int index) {
         try {
-            return Option.asOption(get(index));
+            return OptionJ.asOption(get(index));
         } catch (IndexOutOfBoundsException e) {
-            return Option.NONE;
+            return OptionJ.NONE_J;
         }
 
     }

@@ -2,7 +2,7 @@ package com.waygo.data.model.butler;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 public abstract class ButlerResponse {
 
@@ -19,8 +19,8 @@ public abstract class ButlerResponse {
     }
 
     @NonNull
-    protected static Result<String> createMessage(@NonNull final String message) {
-        return Result.asResult(message)
+    protected static ResultJ<String> createMessage(@NonNull final String message) {
+        return ResultJ.asResult(message)
                 .filter(s -> !s.isEmpty(), __ -> "Sorry, didn't get that.");
     }
 }

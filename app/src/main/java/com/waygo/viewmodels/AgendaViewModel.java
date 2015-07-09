@@ -2,14 +2,7 @@ package com.waygo.viewmodels;
 
 import com.waygo.data.DataLayer;
 import com.waygo.data.DataStreamNotification;
-import com.waygo.data.model.butler.ButlerResponse;
-import com.waygo.data.model.fuel.Fuel;
-import com.waygo.data.provider.interfaces.IButler;
-import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.pojo.flightstatus.Flight;
-import com.waygo.utils.ObservableEx;
-import com.waygo.utils.option.Option;
-import com.waygo.utils.result.Result;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -22,10 +15,8 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.android.internal.Preconditions;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
-import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
 public class AgendaViewModel extends AbstractViewModel {

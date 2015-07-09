@@ -4,21 +4,21 @@ import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
 import com.waygo.data.model.BaseModel;
-import com.waygo.utils.option.Option;
+import com.waygo.utils.option.OptionJ;
 
 public abstract class Person extends BaseModel {
     @NonNull
     private final String mSentence;
 
     @NonNull
-    private final Option<Integer> mUserImage;
+    private final OptionJ<Integer> mUserImage;
 
     @NonNull
     private final String mTime;
 
 
     protected Person(@NonNull final String sentence,
-                     @NonNull final Option<Integer> userImage) {
+                     @NonNull final OptionJ<Integer> userImage) {
         mSentence = sentence;
         mUserImage = userImage;
 
@@ -31,7 +31,7 @@ public abstract class Person extends BaseModel {
     }
 
     @NonNull
-    public Option<Integer> getUserImage() {
+    public OptionJ<Integer> getUserImage() {
         return mUserImage;
     }
 

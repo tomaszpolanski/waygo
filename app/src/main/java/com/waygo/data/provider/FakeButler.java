@@ -12,7 +12,7 @@ import com.waygo.data.model.butler.ButlerSayResponse;
 import com.waygo.data.model.butler.ButlerShowResponse;
 import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,17 +40,17 @@ public final class FakeButler implements IButler {
 
     @NonNull
     @Override
-    public Observable<Result<ButlerResponse>> ask(@NonNull final String question) {
-        return Observable.create(new Observable.OnSubscribe<Result<ButlerResponse>>() {
+    public Observable<ResultJ<ButlerResponse>> ask(@NonNull final String question) {
+        return Observable.create(new Observable.OnSubscribe<ResultJ<ButlerResponse>>() {
             @Override
-            public void call(Subscriber<? super Result<ButlerResponse>> subscriber) {
+            public void call(Subscriber<? super ResultJ<ButlerResponse>> subscriber) {
                 subscriber.onNext(getResponse(question));
             }
         }).debounce(1, TimeUnit.SECONDS, mSchedulerProvider.getTimeScheduler());
     }
 
     @NonNull
-    private Result<ButlerResponse> getResponse(@NonNull final String question) {
+    private ResultJ<ButlerResponse> getResponse(@NonNull final String question) {
         switch (question) {
             case HUNGRY:
                 return ButlerSayResponse.create("Hi, Hungry I thought your name was Jenny, Ha Ha :P So, Vegan like last time?");
@@ -62,14 +62,14 @@ public final class FakeButler implements IButler {
                 return getBitmap(R.drawable.map, mResources)
                         .flatMap(bitmap -> ButlerShowResponse.create("Here's the map.", bitmap));
             default:
-                return Result.failure("Sorry, I didn't get that");
+                return ResultJ.failure("Sorry, I didn't get that");
         }
     }
 
     @NonNull
-    private static Result<Bitmap> getBitmap(final int id,
+    private static ResultJ<Bitmap> getBitmap(final int id,
                                             @NonNull final Resources resources) {
-        return Result.asResult(BitmapFactory.decodeResource(resources, id));
+        return ResultJ.asResult(BitmapFactory.decodeResource(resources, id));
     }
 
 

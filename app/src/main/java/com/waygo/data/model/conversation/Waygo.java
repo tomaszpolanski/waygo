@@ -7,12 +7,12 @@ import com.waygo.R;
 import com.waygo.data.model.butler.ButlerResponse;
 import com.waygo.data.model.butler.ButlerSayResponse;
 import com.waygo.data.model.butler.ButlerShowResponse;
-import com.waygo.utils.option.Option;
+import com.waygo.utils.option.OptionJ;
 
 public class Waygo extends Person {
 
     @NonNull
-    private final Option<Bitmap> mImage;
+    private final OptionJ<Bitmap> mImage;
 
     public Waygo(@NonNull final ButlerResponse response) {
         super(response.getMessage(), getUserImage(response));
@@ -20,28 +20,28 @@ public class Waygo extends Person {
     }
 
     public Waygo(@NonNull final String message) {
-        super(message, Option.asOption(R.drawable.small_waygo));
-        mImage = Option.NONE;
+        super(message, OptionJ.asOption(R.drawable.small_waygo));
+        mImage = OptionJ.NONE_J;
     }
 
     @NonNull
-    public Option<Bitmap> getImage() {
+    public OptionJ<Bitmap> getImage() {
         return mImage;
     }
 
 
     @NonNull
-    private static Option<Bitmap> getBitmap(@NonNull final ButlerResponse response) {
-        return Option.asOption(response)
+    private static OptionJ<Bitmap> getBitmap(@NonNull final ButlerResponse response) {
+        return OptionJ.asOption(response)
                 .ofType(ButlerShowResponse.class)
                 .map(ButlerShowResponse::getImage);
     }
 
     @NonNull
-    private static Option<Integer> getUserImage(@NonNull final ButlerResponse response) {
-        return Option.asOption(response)
+    private static OptionJ<Integer> getUserImage(@NonNull final ButlerResponse response) {
+        return OptionJ.asOption(response)
                 .ofType(ButlerSayResponse.class)
                 .map(__ -> R.drawable.small_waygo)
-                .orOption(() -> Option.asOption(R.drawable.small_lady));
+                .orOption(() -> OptionJ.asOption(R.drawable.small_lady));
     }
 }

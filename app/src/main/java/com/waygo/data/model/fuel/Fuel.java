@@ -4,7 +4,7 @@ package com.waygo.data.model.fuel;
 import android.support.annotation.NonNull;
 
 import com.waygo.data.model.BaseModel;
-import com.waygo.utils.result.Result;
+import com.waygo.utilskt.Result;
 
 public abstract class Fuel extends BaseModel {
 
@@ -20,7 +20,7 @@ public abstract class Fuel extends BaseModel {
 
     @NonNull
     protected static Result<Float> createValue(final float value) {
-        return Result.asResult(value)
-                .filter(v -> v >= 0 && v <= 1, v -> "Fuel value is invalid: " + v);
+        return Result.ofObj(value)
+                .filter(v -> v >= 0 && v <= 1,  "Fuel value is invalid: " );
     }
 }

@@ -2,7 +2,7 @@ package com.waygo.data.model;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.option.Option;
+import com.waygo.utils.option.OptionJ;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -17,20 +17,20 @@ public final class GeoCoordinate {
     }
 
     @NonNull
-    public Option<GeoCoordinate> withLatitude(final double latitude) {
+    public OptionJ<GeoCoordinate> withLatitude(final double latitude) {
         return create(latitude, Longitude);
     }
 
     @NonNull
-    public Option<GeoCoordinate> withLongitude(final double longitude) {
+    public OptionJ<GeoCoordinate> withLongitude(final double longitude) {
         return create(Latitude, longitude);
     }
 
     @NonNull
-    public static Option<GeoCoordinate> create(final double latitude, final double longitude) {
-        return Option.asOption(latitude)
+    public static OptionJ<GeoCoordinate> create(final double latitude, final double longitude) {
+        return OptionJ.asOption(latitude)
                 .filter(lat -> Math.abs(lat) <= 90.0)
-                .flatMap(lat -> Option.asOption(longitude)
+                .flatMap(lat -> OptionJ.asOption(longitude)
                         .filter(lng -> Math.abs(lng) <= 180.0)
                         .map(lng -> new GeoCoordinate(lat, lng)));
     }
@@ -41,11 +41,11 @@ public final class GeoCoordinate {
     @Override
     public boolean equals(final Object o) {
         final double difference = 0.0001;
-        return Option.asOption(o)
+        return OptionJ.asOption(o)
                 .filter(obj -> obj instanceof GeoCoordinate)
                 .map(obj -> (GeoCoordinate) obj)
                 .filter(other -> areEqual(other.Longitude, Longitude, difference))
-                .filter(other -> areEqual(other.Latitude, Latitude, difference)) != Option.NONE;
+                .filter(other -> areEqual(other.Latitude, Latitude, difference)) != OptionJ.NONE_J;
     }
 
     @Override

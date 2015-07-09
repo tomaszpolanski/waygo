@@ -3,12 +3,12 @@ package com.waygo.data.provider.interfaces;
 import android.support.annotation.NonNull;
 
 import com.waygo.data.model.butler.ButlerResponse;
-import com.waygo.utils.result.Result;
+import com.waygo.utils.result.ResultJ;
 
 import rx.Observable;
 
 public interface IButler {
 
     @NonNull
-    Observable<Result<ButlerResponse>> ask(@NonNull final String question);
+    Observable<ResultJ<ButlerResponse>> ask(@NonNull final String question);
 }

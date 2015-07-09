@@ -4,7 +4,7 @@ package com.waygo.data.model;
 import android.support.annotation.NonNull;
 
 import com.waygo.utils.Linq;
-import com.waygo.utils.option.Option;
+import com.waygo.utils.option.OptionJ;
 
 import java.util.Arrays;
 
@@ -13,8 +13,8 @@ import java.util.Arrays;
 public abstract class BaseModel {
 
     @NonNull
-    protected <T> Option<T> cast(final Object o) {
-        return Option.asOption(o)
+    protected <T> OptionJ<T> cast(final Object o) {
+        return OptionJ.asOption(o)
                 .filter(obj -> this.getClass().isInstance(obj))
                 .map(obj -> (T) obj.getClass().cast(obj));
     }
