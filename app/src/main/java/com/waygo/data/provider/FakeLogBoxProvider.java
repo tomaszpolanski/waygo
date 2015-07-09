@@ -9,8 +9,6 @@ import com.waygo.data.model.fuel.Premium;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.ObservableEx;
-import com.waygo.utils.option.OptionJ;
-import com.waygo.utils.result.ResultJ;
 import com.waygo.utilskt.Option;
 import com.waygo.utilskt.Result;
 

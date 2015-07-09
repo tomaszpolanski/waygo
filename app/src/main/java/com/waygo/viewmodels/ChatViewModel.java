@@ -11,7 +11,6 @@ import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.Linq;
 import com.waygo.utils.ObservableEx;
-import com.waygo.utils.result.ResultJ;
 import com.waygo.utilskt.Option;
 import com.waygo.utilskt.Result;
 

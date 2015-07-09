@@ -4,7 +4,6 @@ import com.waygo.data.DataStreamNotification;
 import com.waygo.pojo.NetworkRequestStatus;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import rx.Observable;
 import rx.functions.Func1;

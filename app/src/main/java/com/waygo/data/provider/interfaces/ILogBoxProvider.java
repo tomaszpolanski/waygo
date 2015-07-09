@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.waygo.data.model.GeoCoordinate;
 import com.waygo.data.model.fuel.Fuel;
-import com.waygo.utils.result.ResultJ;
 import com.waygo.utilskt.Result;
 
 import rx.Observable;

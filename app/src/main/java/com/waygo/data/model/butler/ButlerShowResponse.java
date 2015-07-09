@@ -3,7 +3,6 @@ package com.waygo.data.model.butler;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.result.ResultJ;
 import com.waygo.utilskt.Result;
 
 public class ButlerShowResponse extends ButlerResponse {

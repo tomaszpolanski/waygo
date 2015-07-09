@@ -12,7 +12,6 @@ import com.waygo.data.model.butler.ButlerSayResponse;
 import com.waygo.data.model.butler.ButlerShowResponse;
 import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
-import com.waygo.utils.result.ResultJ;
 import com.waygo.utilskt.Failure;
 import com.waygo.utilskt.Result;
 

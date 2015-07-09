@@ -7,7 +7,6 @@ import com.waygo.data.model.GeoCoordinate;
 import com.waygo.data.provider.interfaces.ILocationProvider;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.ObservableEx;
-import com.waygo.utils.option.OptionJ;
 import com.waygo.utilskt.Option;
 
 import rx.Observable;

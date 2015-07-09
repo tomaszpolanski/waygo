@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
 import com.waygo.data.model.BaseModel;
-import com.waygo.utils.option.OptionJ;
 import com.waygo.utilskt.Option;
 
 public abstract class Person extends BaseModel {

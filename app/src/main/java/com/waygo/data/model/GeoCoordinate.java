@@ -2,7 +2,6 @@ package com.waygo.data.model;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.option.OptionJ;
 import com.waygo.utilskt.Option;
 
 import java.text.DecimalFormat;

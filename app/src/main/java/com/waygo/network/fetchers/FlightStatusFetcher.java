@@ -16,8 +16,6 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.internal.Preconditions;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.observables.GroupedObservable;
 import rx.schedulers.Schedulers;
 
 public class FlightStatusFetcher extends FetcherBase {

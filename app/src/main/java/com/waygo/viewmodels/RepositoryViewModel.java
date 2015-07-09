@@ -2,14 +2,9 @@ package com.waygo.viewmodels;
 
 import com.waygo.data.DataLayer;
 import com.waygo.data.DataStreamNotification;
-import com.waygo.data.model.butler.ButlerResponse;
-import com.waygo.data.model.fuel.Fuel;
 import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.pojo.flightstatus.Flight;
-import com.waygo.utils.ObservableEx;
-import com.waygo.utils.option.OptionJ;
-import com.waygo.utils.result.ResultJ;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -78,8 +73,8 @@ public class RepositoryViewModel extends AbstractViewModel {
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .subscribe(mFlightSubject::onNext,
-                                     throwable -> Log.e(TAG, "Flight error: ",
-                                                        throwable)));
+                                  throwable -> Log.e(TAG, "Flight error: ",
+                                          throwable)));
 
 
     }

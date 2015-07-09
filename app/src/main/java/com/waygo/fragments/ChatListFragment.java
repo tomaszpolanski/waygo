@@ -32,8 +32,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import jet.runtime.typeinfo.JetValueParameter;
+import kotlin.Function1;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class ChatListFragment extends Fragment {
 

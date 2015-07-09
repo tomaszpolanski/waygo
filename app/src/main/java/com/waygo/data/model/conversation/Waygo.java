@@ -7,13 +7,12 @@ import com.waygo.R;
 import com.waygo.data.model.butler.ButlerResponse;
 import com.waygo.data.model.butler.ButlerSayResponse;
 import com.waygo.data.model.butler.ButlerShowResponse;
-import com.waygo.utils.option.OptionJ;
 import com.waygo.utilskt.None;
 import com.waygo.utilskt.Option;
 
 import jet.runtime.typeinfo.JetValueParameter;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function1;
+import kotlin.Function0;
+import kotlin.Function1;
 
 public class Waygo extends Person {
 

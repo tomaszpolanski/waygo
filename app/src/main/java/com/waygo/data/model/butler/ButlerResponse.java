@@ -2,7 +2,6 @@ package com.waygo.data.model.butler;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.result.ResultJ;
 import com.waygo.utilskt.Result;
 
 public abstract class ButlerResponse {

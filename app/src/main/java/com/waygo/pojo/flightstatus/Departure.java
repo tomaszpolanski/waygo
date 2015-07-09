@@ -3,8 +3,6 @@ package com.waygo.pojo.flightstatus;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.annotation.Generated;
-
 public class Departure {
 
     @SerializedName("AirportCode")
