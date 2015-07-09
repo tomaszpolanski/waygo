@@ -11,6 +11,7 @@ import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.ObservableEx;
 import com.waygo.utils.option.OptionJ;
 import com.waygo.utils.result.ResultJ;
+import com.waygo.utilskt.Option;
 import com.waygo.utilskt.Result;
 
 import java.util.concurrent.TimeUnit;
@@ -37,8 +38,13 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     @NonNull
     @Override
     public Observable<GeoCoordinate> getGeoPosition() {
-        return ObservableEx.choose(ObservableEx.repeatTimer(GeoCoordinate.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
-                OptionJ::id)
+        return ObservableEx.chooseKt(ObservableEx.repeatTimer(GeoCoordinate.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
+                new Func1<Option<GeoCoordinate>, Option<GeoCoordinate>>() {
+                    @Override
+                    public Option<GeoCoordinate> call(Option<GeoCoordinate> op) {
+                        return op;
+                    }
+                })
                 .share();
     }
 
