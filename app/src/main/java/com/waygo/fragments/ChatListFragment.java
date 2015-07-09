@@ -182,23 +182,17 @@ public class ChatListFragment extends Fragment {
             holder.mDateTextView.setText(mPersons.get(position).getTime());
             mPersons.get(position)
                     .getUserImage()
-                    .iter(new Function1<Integer, Unit>() {
-                        @Override
-                        public Unit invoke(@JetValueParameter(name = "p1") Integer i) {
-                            holder.mImageView.setImageResource(i);
-                            return Unit.INSTANCE$;
-                        }
+                    .iter(i -> {
+                        holder.mImageView.setImageResource(i);
+                        return Unit.INSTANCE$;
                     });
 
             if (mPersons.get(position) instanceof Waygo) {
                 holder.mMapImageView.setVisibility(View.GONE);
                 ((Waygo) mPersons.get(position)).getImage()
-                                                .iter(new Function1<Bitmap, Unit>() {
-                                                    @Override
-                                                    public Unit invoke(@JetValueParameter(name = "p1") Bitmap __) {
-                                                        holder.mMapImageView.setVisibility(View.VISIBLE);
-                                                        return Unit.INSTANCE$;
-                                                    }
+                                                .iter(__ -> {
+                                                    holder.mMapImageView.setVisibility(View.VISIBLE);
+                                                    return Unit.INSTANCE$;
                                                 });
             }
         }

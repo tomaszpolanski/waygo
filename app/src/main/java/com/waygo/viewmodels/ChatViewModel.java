@@ -55,12 +55,7 @@ public class ChatViewModel extends AbstractViewModel {
                 .ofType(Person.class)
                 .share();
 
-        final Observable<Person> answers = questions.switchMap(s -> ObservableEx.chooseKt(mButler.ask(s.getSentence()), new Func1<Result<ButlerResponse>, Option<ButlerResponse>>() {
-            @Override
-            public Option<ButlerResponse> call(Result<ButlerResponse> r) {
-                return r.toOption();
-            }
-        }))
+        final Observable<Person> answers = questions.switchMap(s -> ObservableEx.chooseKt(mButler.ask(s.getSentence()), r -> r.toOption()))
                  .map(response -> new Waygo(response))
                  .ofType(Person.class);
 

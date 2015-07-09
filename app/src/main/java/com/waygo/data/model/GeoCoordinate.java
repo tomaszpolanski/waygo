@@ -32,30 +32,10 @@ public final class GeoCoordinate {
     @NonNull
     public static Option<GeoCoordinate> create(final double latitude, final double longitude) {
         return Option.ofObj(latitude)
-                .filter(new Function1<Double, Boolean>() {
-                    @Override
-                    public Boolean invoke(@JetValueParameter(name = "p1") Double lat) {
-                        return Math.abs(lat) <= 90.0;
-                    }
-                })
-                .flatMap(new Function1<Double, Option<GeoCoordinate>>() {
-                    @Override
-                    public Option<GeoCoordinate> invoke(@JetValueParameter(name = "p1") Double lat) {
-                        return Option.ofObj(longitude)
-                                     .filter(new Function1<Double, Boolean>() {
-                                         @Override
-                                         public Boolean invoke(@JetValueParameter(name = "p1") Double lng) {
-                                             return Math.abs(lng) <= 180.0;
-                                         }
-                                     })
-                                     .map(new Function1<Double, GeoCoordinate>() {
-                                         @Override
-                                         public GeoCoordinate invoke(@JetValueParameter(name = "p1") Double lng) {
-                                             return new GeoCoordinate(lat, lng);
-                                         }
-                                     });
-                    }
-                });
+                .filter(lat -> Math.abs(lat) <= 90.0)
+                .flatMap(lat -> Option.ofObj(longitude)
+                             .filter(lng -> Math.abs(lng) <= 180.0)
+                             .map(lng -> new GeoCoordinate(lat, lng)));
     }
 
 
@@ -65,30 +45,10 @@ public final class GeoCoordinate {
     public boolean equals(final Object o) {
         final double difference = 0.0001;
         return Option.ofObj(o)
-                .filter(new Function1<Object, Boolean>() {
-                    @Override
-                    public Boolean invoke(@JetValueParameter(name = "p1") Object obj) {
-                        return obj instanceof GeoCoordinate;
-                    }
-                })
-                .map(new Function1<Object, GeoCoordinate>() {
-                    @Override
-                    public GeoCoordinate invoke(@JetValueParameter(name = "p1") Object obj) {
-                        return (GeoCoordinate) obj;
-                    }
-                })
-                .filter(new Function1<GeoCoordinate, Boolean>() {
-                    @Override
-                    public Boolean invoke(@JetValueParameter(name = "p1") GeoCoordinate other) {
-                        return areEqual(other.Longitude, Longitude, difference);
-                    }
-                })
-                .filter(new Function1<GeoCoordinate, Boolean>() {
-                    @Override
-                    public Boolean invoke(@JetValueParameter(name = "p1") GeoCoordinate other) {
-                        return areEqual(other.Latitude, Latitude, difference);
-                    }
-                })
+                .filter(obj -> obj instanceof GeoCoordinate)
+                .map(obj -> (GeoCoordinate) obj)
+                .filter(other -> areEqual(other.Longitude, Longitude, difference))
+                .filter(other -> areEqual(other.Latitude, Latitude, difference))
                      .getIsSome();
     }
 
