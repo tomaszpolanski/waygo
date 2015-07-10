@@ -51,7 +51,7 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
         return generateValue(new Func1<Float, Result<Fuel>>() {
             @Override
             public Result<Fuel> call(Float f) {
-                return Premium.create(f);
+                return Premium.Companion.create(f);
             }
         }, schedulerProvider);
     }
@@ -61,7 +61,7 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
         return generateValue(new Func1<Float, Result<Fuel>>() {
             @Override
             public Result<Fuel> call(Float f) {
-                return Electric.create(f);
+                return Electric.Companion.create(f);
             }
         }, schedulerProvider);
     }
