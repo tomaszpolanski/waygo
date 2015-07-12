@@ -43,18 +43,8 @@ public final class ObservableEx<T> extends Observable<T> {
 
     public static <T, R> Observable<R> chooseKt(final Observable<T> o, final Func1<T, Option<R>> selector) {
         return o.map(selector)
-                .filter(new Func1<Option<R>, Boolean>() {
-                    @Override
-                    public Boolean call(Option<R> option) {
-                        return option.getIsSome();
-                    }
-                })
-                .map(new Func1<Option<R>, R>() {
-                    @Override
-                    public R call(Option<R> oo) {
-                        return oo.getUnsafe();
-                    }
-                });
+                .filter(option -> option.getIsSome())
+                .map(oo -> oo.getUnsafe());
     }
 
     public static <T> Observable<T> delayEach(@NonNull final List<T> elements, int seconds, @NonNull final Scheduler scheduler ) {

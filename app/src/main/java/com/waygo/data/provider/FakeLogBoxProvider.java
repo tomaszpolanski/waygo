@@ -36,7 +36,7 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     @NonNull
     @Override
     public Observable<GeoCoordinate> getGeoPosition() {
-        return ObservableEx.chooseKt(ObservableEx.repeatTimer(GeoCoordinate.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
+        return ObservableEx.chooseKt(ObservableEx.repeatTimer(GeoCoordinate.Companion.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
                 new Func1<Option<GeoCoordinate>, Option<GeoCoordinate>>() {
                     @Override
                     public Option<GeoCoordinate> call(Option<GeoCoordinate> op) {
