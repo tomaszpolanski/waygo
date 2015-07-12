@@ -30,12 +30,12 @@ public class ChatViewModel(private val mButler: IButler, private val mSchedulerP
                 .ofType(javaClass<Person>())
                 .share()
 
-        val answers = questions.switchMap{ObservableEx.chooseKt(mButler.ask(it.getSentence()), {op -> op.toOption()})}
+        val answers = questions.switchMap{ObservableEx.chooseKt(mButler.ask(it.sentence), {op -> op.toOption()})}
                 .map{Waygo(it)}
                 .ofType(javaClass<Person>())
 
         val conversation = questions.mergeWith(answers)
-                .startWith(Waygo("Ola, Jen. Welcome to Madrid."))
+                .startWith(Waygo("Olae, Jen. Welcome to Madrid."))
 
         subscriptions.add(conversation.subscribe(mConversation))
     }

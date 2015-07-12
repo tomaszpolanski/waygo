@@ -1,9 +1,7 @@
 package com.waygo.data.model.fuel
 
-
 import com.waygo.utilskt.Result
 import kotlin.platform.platformStatic
-
 
 public class Premium protected constructor(value: Float) : Fuel(value) {
     companion object {
