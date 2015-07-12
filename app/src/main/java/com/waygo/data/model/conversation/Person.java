@@ -3,10 +3,9 @@ package com.waygo.data.model.conversation;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
-import com.waygo.data.model.BaseModel;
 import com.waygo.utilskt.Option;
 
-public abstract class Person extends BaseModel {
+public abstract class Person{
     @NonNull
     private final String mSentence;
 
@@ -39,9 +38,9 @@ public abstract class Person extends BaseModel {
     public String getTime() {
         return mTime;
     }
-
-    @Override
-    public String toString() {
-        return getString("Sentence", getSentence());
-    }
+//
+//    @Override
+//    public String toString() {
+//        return getString("Sentence", getSentence());
+//    }
 }

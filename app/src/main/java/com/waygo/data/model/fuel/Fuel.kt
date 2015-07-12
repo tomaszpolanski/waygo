@@ -1,11 +1,10 @@
 package com.waygo.data.model.fuel
 
 
-import com.waygo.data.model.BaseModel
 import com.waygo.utilskt.Result
 import kotlin.platform.platformStatic
 
-public abstract class Fuel protected constructor(public val value: Float) : BaseModel() {
+public abstract class Fuel protected constructor(public val value: Float) {
     companion object {
 
         protected platformStatic fun createValue(value: Float): Result<Float> =

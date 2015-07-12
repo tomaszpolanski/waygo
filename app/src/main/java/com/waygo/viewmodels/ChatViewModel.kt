@@ -8,7 +8,6 @@ import com.waygo.data.model.conversation.Waygo
 import com.waygo.data.provider.FakeButler
 import com.waygo.data.provider.interfaces.IButler
 import com.waygo.data.provider.interfaces.ISchedulerProvider
-import com.waygo.utils.Linq
 import com.waygo.utils.ObservableEx
 import com.waygo.utilskt.Option
 import com.waygo.utilskt.Result
