@@ -27,7 +27,7 @@ public final class ObservableEx<T> extends Observable<T> {
 
     public static Observable<Integer> randTimer(final int min, final int max, final long seconds, final Scheduler scheduler) {
         return Observable.timer(seconds, TimeUnit.SECONDS, scheduler)
-                .map(__ -> Rand.randInt(min, max));
+                .map(__ -> Rand.INSTANCE$.randInt(min, max));
     }
 
     public static <T> Observable<T> late(final Observable<T> observable, long delay, TimeUnit unit) {
