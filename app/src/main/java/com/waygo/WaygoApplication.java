@@ -1,10 +1,10 @@
 package com.waygo;
 
-import com.waygo.injections.Graph;
-import com.waygo.utils.Instrumentation;
-
 import android.app.Application;
 import android.support.annotation.NonNull;
+
+import com.waygo.injections.Graph;
+import com.waygo.utils.Instrumentation;
 
 import javax.inject.Inject;
 

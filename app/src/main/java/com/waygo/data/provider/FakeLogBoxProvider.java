@@ -9,8 +9,8 @@ import com.waygo.data.model.fuel.Premium;
 import com.waygo.data.provider.interfaces.ILogBoxProvider;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
 import com.waygo.utils.ObservableEx;
-import com.waygo.utils.option.Option;
-import com.waygo.utils.result.Result;
+import com.waygo.utilskt.Option;
+import com.waygo.utilskt.Result;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,19 +36,34 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     @NonNull
     @Override
     public Observable<GeoCoordinate> getGeoPosition() {
-        return ObservableEx.choose(ObservableEx.repeatTimer(GeoCoordinate.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
-                Option::id)
+        return ObservableEx.chooseKt(ObservableEx.repeatTimer(GeoCoordinate.Companion.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
+                new Func1<Option<GeoCoordinate>, Option<GeoCoordinate>>() {
+                    @Override
+                    public Option<GeoCoordinate> call(Option<GeoCoordinate> op) {
+                        return op;
+                    }
+                })
                 .share();
     }
 
     @NonNull
     private static Observable<Result<Fuel>> generatePremium(final @NonNull ISchedulerProvider schedulerProvider) {
-        return generateValue(Premium::create, schedulerProvider);
+        return generateValue(new Func1<Float, Result<Fuel>>() {
+            @Override
+            public Result<Fuel> call(Float f) {
+                return Premium.Companion.create(f);
+            }
+        }, schedulerProvider);
     }
 
     @NonNull
     private static Observable<Result<Fuel>> generateElectric(final @NonNull ISchedulerProvider schedulerProvider) {
-        return generateValue(Electric::create, schedulerProvider);
+        return generateValue(new Func1<Float, Result<Fuel>>() {
+            @Override
+            public Result<Fuel> call(Float f) {
+                return Electric.Companion.create(f);
+            }
+        }, schedulerProvider);
     }
 
     @NonNull

@@ -3,7 +3,7 @@ package com.waygo.data.provider.interfaces;
 import android.support.annotation.NonNull;
 
 import com.waygo.data.model.butler.ButlerResponse;
-import com.waygo.utils.result.Result;
+import com.waygo.utilskt.Result;
 
 import rx.Observable;
 

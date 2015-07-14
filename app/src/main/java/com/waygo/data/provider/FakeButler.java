@@ -12,10 +12,13 @@ import com.waygo.data.model.butler.ButlerSayResponse;
 import com.waygo.data.model.butler.ButlerShowResponse;
 import com.waygo.data.provider.interfaces.IButler;
 import com.waygo.data.provider.interfaces.ISchedulerProvider;
-import com.waygo.utils.result.Result;
+import com.waygo.utilskt.Failure;
+import com.waygo.utilskt.Result;
 
 import java.util.concurrent.TimeUnit;
 
+import jet.runtime.typeinfo.JetValueParameter;
+import kotlin.jvm.functions.Function1;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -53,23 +56,28 @@ public final class FakeButler implements IButler {
     private Result<ButlerResponse> getResponse(@NonNull final String question) {
         switch (question) {
             case HUNGRY:
-                return ButlerSayResponse.create("Hi, Hungry I thought your name was Jenny, Ha Ha :P So, Vegan like last time?");
+                return ButlerSayResponse.Companion.create("Hi, Hungry I thought your name was Jenny, Ha Ha :P So, Vegan like last time?").ofType(ButlerResponse.class);
             case TOILETS:
-                return ButlerSayResponse.create("Next one is twenty metres on the left. ");
+                return ButlerSayResponse.Companion.create("Next one is twenty metres on the left. ").ofType(ButlerResponse.class);
             case CHEAPGOOD:
-                return ButlerSayResponse.create("Ok, There is <a href='http://www.beans.com'> Natural Beans </a> which is mid priced with four stars on foursquare? ");
+                return ButlerSayResponse.Companion.create("Ok, There is <a href='http://www.beans.com'> Natural Beans </a> which is mid priced with four stars on foursquare? ").ofType(ButlerResponse.class);
             case MAP:
                 return getBitmap(R.drawable.map, mResources)
-                        .flatMap(bitmap -> ButlerShowResponse.create("Here's the map.", bitmap));
+                        .flatMap(new Function1<Bitmap, Result<ButlerResponse>>() {
+                            @Override
+                            public Result<ButlerResponse> invoke(@JetValueParameter(name = "p1") Bitmap bitmap) {
+                                return ButlerShowResponse.Companion.create("Here's the map.", bitmap).ofType(ButlerResponse.class);
+                            }
+                        });
             default:
-                return Result.failure("Sorry, I didn't get that");
+                return new Failure("Sorry, I didn't get that");
         }
     }
 
     @NonNull
     private static Result<Bitmap> getBitmap(final int id,
                                             @NonNull final Resources resources) {
-        return Result.asResult(BitmapFactory.decodeResource(resources, id));
+        return Result.ofObj(BitmapFactory.decodeResource(resources, id));
     }
 
 

@@ -3,8 +3,7 @@ package com.waygo.utils;
 
 import android.support.annotation.NonNull;
 
-import com.waygo.utils.option.Option;
-import com.waygo.utils.result.Result;
+import com.waygo.utilskt.Option;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +27,7 @@ public final class ObservableEx<T> extends Observable<T> {
 
     public static Observable<Integer> randTimer(final int min, final int max, final long seconds, final Scheduler scheduler) {
         return Observable.timer(seconds, TimeUnit.SECONDS, scheduler)
-                .map(__ -> Rand.randInt(min, max));
+                .map(__ -> Rand.INSTANCE$.randInt(min, max));
     }
 
     public static <T> Observable<T> late(final Observable<T> observable, long delay, TimeUnit unit) {
@@ -40,25 +39,12 @@ public final class ObservableEx<T> extends Observable<T> {
                          .map(__ -> value);
     }
 
-    public static <T> Observable<T> filterOption(Observable<Option<T>> o) {
-        return o.filter(option -> option != Option.NONE)
-                .map(Option::getUnsafe);
-    }
 
-    public static <T> Observable<T> filterResult(Observable<Result<T>> r) {
-        return r.filter(Result::isSuccess)
-                .map(Result::getUnsafe);
-    }
 
-    public static <T, R> Observable<R> choose(final Observable<T> o, final Func1<T, Option<R>> selector) {
+    public static <T, R> Observable<R> chooseKt(final Observable<T> o, final Func1<T, Option<R>> selector) {
         return o.map(selector)
-                .filter(option -> option != Option.NONE)
-                .map(Option::getUnsafe);
-    }
-
-    public static Observable<String> defineError(final Observable<? extends Result> error) {
-        return error.filter(result -> !result.isSuccess())
-                    .map(Result::getMessage);
+                .filter(option -> option.getIsSome())
+                .map(oo -> oo.getUnsafe());
     }
 
     public static <T> Observable<T> delayEach(@NonNull final List<T> elements, int seconds, @NonNull final Scheduler scheduler ) {
