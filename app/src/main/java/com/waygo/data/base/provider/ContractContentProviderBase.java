@@ -14,6 +14,7 @@ import com.waygo.data.base.route.DatabaseRoute;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
 import rx.android.internal.Preconditions;
 
 abstract public class ContractContentProviderBase extends ContentProviderBase {
@@ -119,7 +120,7 @@ abstract public class ContractContentProviderBase extends ContentProviderBase {
         Preconditions.checkNotNull(uri, "URI cannot be null.");
 
         getDatabaseRouteForMatch(match).notifyChange(uri,
-                (value) -> getContext().getContentResolver().notifyChange(value, null));
+                (value) -> { getContext().getContentResolver().notifyChange(value, null); return Unit.INSTANCE$; });
     }
 
     @NonNull

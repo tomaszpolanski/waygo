@@ -37,6 +37,6 @@ public class LufthansaSingleRoute extends DatabaseRouteBase {
     @NonNull
     @Override
     public String getPath() {
-        return tableName + "/*";
+        return getTableName() + "/*";
     }
 }

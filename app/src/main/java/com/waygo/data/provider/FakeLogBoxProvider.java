@@ -37,33 +37,18 @@ public final class FakeLogBoxProvider implements ILogBoxProvider {
     @Override
     public Observable<GeoCoordinate> getGeoPosition() {
         return ObservableEx.chooseKt(ObservableEx.repeatTimer(GeoCoordinate.Companion.create(52.4388263, 13.3900338), 1, 1, mSchedulerProvider.getTimeScheduler()),
-                new Func1<Option<GeoCoordinate>, Option<GeoCoordinate>>() {
-                    @Override
-                    public Option<GeoCoordinate> call(Option<GeoCoordinate> op) {
-                        return op;
-                    }
-                })
+                op -> op)
                 .share();
     }
 
     @NonNull
     private static Observable<Result<Fuel>> generatePremium(final @NonNull ISchedulerProvider schedulerProvider) {
-        return generateValue(new Func1<Float, Result<Fuel>>() {
-            @Override
-            public Result<Fuel> call(Float f) {
-                return Premium.Companion.create(f);
-            }
-        }, schedulerProvider);
+        return generateValue(Premium::create, schedulerProvider);
     }
 
     @NonNull
     private static Observable<Result<Fuel>> generateElectric(final @NonNull ISchedulerProvider schedulerProvider) {
-        return generateValue(new Func1<Float, Result<Fuel>>() {
-            @Override
-            public Result<Fuel> call(Float f) {
-                return Electric.Companion.create(f);
-            }
-        }, schedulerProvider);
+        return generateValue(Electric::create, schedulerProvider);
     }
 
     @NonNull
