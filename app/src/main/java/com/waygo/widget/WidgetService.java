@@ -57,12 +57,6 @@ public class WidgetService extends Service {
                                 .subscribe(flight -> {
                                     remoteViews.setTextViewText(R.id.widget_layout_title,
                                                                 flight.getFlightStatus().getDefinition());
-//                                    remoteViews.setTextViewText(R.id.widget_layout_stargazers,
-//                                                                "stars: " + repository
-//                                                                        .getStargazersCount());
-//                                    remoteViews.setTextViewText(R.id.widget_layout_forks,
-//                                                                "forks: " + repository
-//                                                                        .getForksCount());
                                     appWidgetManager.updateAppWidget(widgetId, remoteViews);
                                 })
                          );

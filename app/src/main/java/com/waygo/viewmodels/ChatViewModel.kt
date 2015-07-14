@@ -11,6 +11,7 @@ import com.waygo.data.provider.interfaces.ISchedulerProvider
 import com.waygo.utils.ObservableEx
 import com.waygo.utilskt.Option
 import com.waygo.utilskt.Result
+import com.waygo.utilskt.choose
 import com.waygo.utilskt.ofType
 import rx.Observable
 import rx.functions.Func1
@@ -30,12 +31,12 @@ public class ChatViewModel(private val mButler: IButler, private val mSchedulerP
                 .ofType<Person>()
                 .share()
 
-        val answers = questions.switchMap{ObservableEx.chooseKt(mButler.ask(it.sentence), {op -> op.toOption()})}
+        val answers = questions.switchMap{mButler.ask(it.sentence).choose{op -> op.toOption()}}
                 .map{Waygo(it)}
                 .ofType<Person>()
 
         val conversation = questions.mergeWith(answers)
-                .startWith(Waygo("OlabbceecccccQQQQ, Jen. Welcome to Madrid."))
+                .startWith(Waygo("Ola, Jen. Welcome to Madrid."))
 
         subscriptions.add(conversation.subscribe(mConversation))
     }
