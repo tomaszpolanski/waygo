@@ -25,7 +25,7 @@ public abstract class Option<T> {
     abstract public fun orOption( selector:  () -> Option<T> ) : Option<T>
     abstract public fun orDefault( selector:  () -> T ) : T
     abstract public fun toResult(fail: String) : Result<T>
-    abstract public fun toList() : List<T>
+    abstract public fun toSequence() : Sequence<T>
     abstract public fun <OUT> match( some:  (T) -> OUT, none: () -> OUT) : OUT
     abstract public fun iter(some: (T) -> Unit) : Unit
 }
@@ -44,7 +44,7 @@ public class Some<T> constructor( val value : T) : Option<T>() {
     override fun orOption(selector: () -> Option<T>): Option<T> = this
     override fun orDefault(selector: () -> T): T = value
     override fun toResult(fail: String): Result<T>  = Success(value)
-    override fun toList(): List<T> = listOf(value)
+    override fun toSequence() : Sequence<T> = sequenceOf(value)
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = some(value)
     override fun iter(some: (T) -> Unit) = some(value)
 }
@@ -64,7 +64,7 @@ public class None<T> constructor() : Option<T>() {
     override fun orOption(selector: () -> Option<T>): Option<T> = selector()
     override fun orDefault(selector: () -> T): T = selector()
     override fun toResult(fail: String): Result<T>  = Failure(fail)
-    override fun toList(): List<T> = emptyList()
+    override fun toSequence() : Sequence<T> = emptySequence()
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = none()
     override fun iter(some: (T) -> Unit) = Unit
 }
