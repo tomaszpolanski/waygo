@@ -63,12 +63,7 @@ public final class FakeButler implements IButler {
                 return ButlerSayResponse.Companion.create("Ok, There is <a href='http://www.beans.com'> Natural Beans </a> which is mid priced with four stars on foursquare? ").ofType(ButlerResponse.class);
             case MAP:
                 return getBitmap(R.drawable.map, mResources)
-                        .flatMap(new Function1<Bitmap, Result<ButlerResponse>>() {
-                            @Override
-                            public Result<ButlerResponse> invoke(@JetValueParameter(name = "p1") Bitmap bitmap) {
-                                return ButlerShowResponse.Companion.create("Here's the map.", bitmap).ofType(ButlerResponse.class);
-                            }
-                        });
+                        .flatMap(bitmap -> ButlerShowResponse.Companion.create("Here's the map.", bitmap).ofType(ButlerResponse.class));
             default:
                 return new Failure("Sorry, I didn't get that");
         }

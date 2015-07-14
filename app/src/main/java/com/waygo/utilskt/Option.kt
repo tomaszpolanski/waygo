@@ -2,7 +2,7 @@ package com.waygo.utilskt
 
 import kotlin.platform.platformStatic
 
-abstract class Option<T> {
+public abstract class Option<T> {
 
     abstract public val unsafe : T;
     abstract public val isSome : Boolean
@@ -30,7 +30,7 @@ abstract class Option<T> {
     abstract public fun iter(some: (T) -> Unit) : Unit
 }
 
-class Some<T> internal constructor( val value : T) : Option<T>() {
+public class Some<T> constructor( val value : T) : Option<T>() {
 
 
     override val isSome: Boolean = true
@@ -49,7 +49,7 @@ class Some<T> internal constructor( val value : T) : Option<T>() {
     override fun iter(some: (T) -> Unit) = some(value)
 }
 
-class None<T> internal constructor() : Option<T>() {
+public class None<T> constructor() : Option<T>() {
 
 
     override val isSome: Boolean = false
@@ -68,3 +68,9 @@ class None<T> internal constructor() : Option<T>() {
     override fun <OUT> match(some: (T) -> OUT, none: () -> OUT): OUT = none()
     override fun iter(some: (T) -> Unit) = Unit
 }
+
+public inline fun <reified OUT> Option<*>.ofType(): Option<OUT> =
+        when (this) {
+            is Some -> if (this.unsafe is OUT) Some(unsafe) else None()
+            else -> None<OUT>()
+        }

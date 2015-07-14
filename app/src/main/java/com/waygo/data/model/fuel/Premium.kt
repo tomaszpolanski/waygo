@@ -1,6 +1,7 @@
 package com.waygo.data.model.fuel
 
 import com.waygo.utilskt.Result
+import com.waygo.utilskt.ofType
 import kotlin.platform.platformStatic
 
 public class Premium protected constructor(value: Float) : Fuel(value) {
@@ -8,6 +9,6 @@ public class Premium protected constructor(value: Float) : Fuel(value) {
         public platformStatic fun create(value: Float): Result<Fuel> =
                 Fuel.createValue(value)
                         .map({ Premium })
-                        .ofType(javaClass<Fuel>())
+                        .ofType<Fuel>()
     }
 }

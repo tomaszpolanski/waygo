@@ -9,6 +9,7 @@ import com.waygo.data.model.butler.ButlerShowResponse
 import com.waygo.utilskt.None
 import com.waygo.utilskt.Option
 import com.waygo.utilskt.Result
+import com.waygo.utilskt.ofType
 
 import kotlin.Function0
 import kotlin.Function1
@@ -28,14 +29,14 @@ public class Waygo : Person {
 
     private fun getBitmap(response: ButlerResponse): Option<Bitmap> {
         return Option.ofObj(response)
-                .ofType(javaClass<ButlerShowResponse>())
+                .ofType<ButlerShowResponse>()
                 .map{it.image}
     }
 
     companion object {
         private platformStatic fun getUserImage(response: ButlerResponse): Option<Int> {
             return Option.ofObj(response)
-                    .ofType(javaClass<ButlerSayResponse>())
+                    .ofType<ButlerSayResponse>()
                     .map {R.drawable.small_waygo}
                     .orOption {Option.ofObj(R.drawable.small_lady)}
         }
