@@ -35,7 +35,7 @@ public class ChatViewModel(private val mButler: IButler, private val mSchedulerP
                 .ofType<Person>()
 
         val conversation = questions.mergeWith(answers)
-                .startWith(Waygo("Olabb, Jen. Welcome to Madrid."))
+                .startWith(Waygo("OlabbceecccccQQQQ, Jen. Welcome to Madrid."))
 
         subscriptions.add(conversation.subscribe(mConversation))
     }

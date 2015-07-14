@@ -24,7 +24,7 @@ public class FlightStatusContainer extends BaseLufthansaResponse {
     public String toString() {
         final StringBuffer sb = new StringBuffer("FlightStatusContainer{");
         sb.append("mFlightStatusResource=").append(mFlightStatusResource);
-        sb.append("mProcessingErrors=").append(mProcessingErrors);
+        sb.append("mProcessingErrors=").append(getProcessingErrors());
         sb.append('}');
         return sb.toString();
     }
