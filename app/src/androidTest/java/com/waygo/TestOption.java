@@ -8,6 +8,8 @@ import com.waygo.utilskt.Result;
 import java.io.Serializable;
 import java.util.List;
 
+import kotlin.Sequence;
+
 public class TestOption extends SimpleTestCase {
 
 
@@ -139,23 +141,6 @@ public class TestOption extends SimpleTestCase {
         assertEquals(str, s);
     }
 
-    public void testToListSome() throws Exception {
-
-        final String str = "Something";
-        List<String> list = Option.ofObj(str)
-                .toList();
-
-        assertEquals(1, list.size());
-        assertEquals(str, list.get(0));
-    }
-
-
-    public void testToListNone() throws Exception {
-        List<String> list = Option.ofObj((String) null)
-                .toList();
-
-        assertEquals(0, list.size());
-    }
 
     public void testTryAsOptionSome() throws Exception {
 
@@ -173,33 +158,6 @@ public class TestOption extends SimpleTestCase {
 
         assertFalse(op.getIsSome());
     }
-
-    public void testOfTypeSome() throws Exception {
-
-        final String str = "Something";
-        Option<String> op = Option.ofObj((Serializable)str)
-                                  .ofType(String.class);
-
-        assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
-    }
-
-    public void testOfTypeSomeFailed() throws Exception {
-
-        Option<String> op = Option.ofObj(1)
-                .ofType(String.class);
-
-        assertFalse(op.getIsSome());
-    }
-
-    public void testOfTypeNone() throws Exception {
-
-        Option<String> op = Option.ofObj((String) null)
-                .ofType(String.class);
-
-        assertFalse(op.getIsSome());
-    }
-
     public void testToResultSome() throws Exception {
 
         final String str = "Something";

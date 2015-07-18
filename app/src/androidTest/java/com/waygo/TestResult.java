@@ -157,32 +157,6 @@ public class TestResult extends SimpleTestCase {
         assertFalse(re.getIsSuccess());
     }
 
-    public void testOfTypeSuccess() throws Exception {
-
-        final String str = "Something";
-        Result<String> re = Result.ofObj((Serializable)str)
-                .ofType(String.class);
-
-        assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
-    }
-
-    public void testOfTypeSomeFailed() throws Exception {
-
-        Result<String> re = Result.ofObj(1)
-                .ofType(String.class);
-
-        assertFalse(re.getIsSuccess());
-    }
-
-    public void testOfTypeFailure() throws Exception {
-
-        Result<String> re = Result.ofObj((String) null)
-                .ofType(String.class);
-
-        assertFalse(re.getIsSuccess());
-    }
-
     public void testToOptionSuccess() throws Exception {
 
         final String str = "Something";
