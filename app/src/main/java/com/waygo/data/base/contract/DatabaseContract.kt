@@ -7,7 +7,7 @@ public interface DatabaseContract<T> {
     public fun getCreateTable(): String
     public fun getDropTable(): String
     public fun getTableName(): String
-    public fun read(cursor: Cursor): T?
+    public fun read(cursor: Cursor): T
     public fun getContentValuesForItem(item: T): ContentValues
     public fun getProjection(): Array<String>
 }

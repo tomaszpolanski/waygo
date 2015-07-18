@@ -23,7 +23,7 @@ public abstract class SerializedJsonContract<T> : DatabaseContract<T> {
 
     protected abstract fun getType(): Type
 
-    override fun read(cursor: Cursor): T? {
+    override fun read(cursor: Cursor): T {
         Preconditions.checkNotNull(cursor, "Cursor cannot be null.")
 
         if (cursor.moveToFirst()) {

@@ -16,18 +16,18 @@ public class FlightStatusContainer(
         return sb.toString()
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
             return true
         }
-        if (o !is FlightStatusContainer) {
+        if (other !is FlightStatusContainer) {
             return false
         }
 
         return !(if (flightStatusResource != null)
-            flightStatusResource != o.flightStatusResource
+            flightStatusResource != other.flightStatusResource
         else
-            o.flightStatusResource != null)
+            other.flightStatusResource != null)
 
     }
 

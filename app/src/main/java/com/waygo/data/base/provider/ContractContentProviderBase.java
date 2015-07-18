@@ -85,7 +85,7 @@ abstract public class ContractContentProviderBase extends ContentProviderBase {
     @NonNull
     @Override
     public String getType(@NonNull Uri uri) {
-        final int match = URI_MATCHER.match(uri);
+        final int match = getURI_MATCHER().match(uri);
         return getDatabaseRouteForMatch(match).getMimeType();
     }
 
@@ -100,10 +100,10 @@ abstract public class ContractContentProviderBase extends ContentProviderBase {
 
     @Override
     protected void createUriMatcher() {
-        URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
+        setURI_MATCHER(new UriMatcher(UriMatcher.NO_MATCH));
         int i = 0;
         for (DatabaseRoute databaseRoute : databaseRoutes) {
-            URI_MATCHER.addURI(getProviderName(), databaseRoute.getPath(), i++);
+            getURI_MATCHER().addURI(getProviderName(), databaseRoute.getPath(), i++);
         }
     }
 
